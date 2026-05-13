@@ -1,0 +1,180 @@
+/**
+ * app/globals.css
+ * ===============
+ * الـ CSS الأساسي للموقع كله.
+ * Tailwind directives + Custom styles + Animations
+ */
+
+/* ===== Tailwind Directives ===== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Google Fonts Import ===== */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ===== CSS Variables (متغيرات عامة) ===== */
+:root {
+  --brand: #F5C518;
+  --brand-glow: rgba(245, 197, 24, 0.3);
+  --dark-900: #080808;
+  --dark-800: #0F0F0F;
+  --dark-700: #161616;
+  --dark-600: #1E1E1E;
+  --dark-500: #2A2A2A;
+}
+
+/* ===== Base Styles ===== */
+@layer base {
+  /* Scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar - بيخلي الـ Scrollbar يتناسب مع الـ Dark Mode */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--dark-800);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--brand);
+    border-radius: 2px;
+  }
+
+  /* Selection color - لون التحديد لما بتحدد نص */
+  ::selection {
+    background: var(--brand);
+    color: #000;
+  }
+}
+
+/* ===== Component Styles ===== */
+@layer components {
+
+  /* ===== Button Styles ===== */
+  .btn-primary {
+    @apply relative inline-flex items-center gap-2 px-8 py-4 
+           bg-brand text-black font-display font-700 text-sm 
+           tracking-wider uppercase overflow-hidden
+           transition-all duration-300 hover:scale-105;
+  }
+
+  /* تأثير الـ Glow عند الـ Hover */
+  .btn-primary::after {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: radial-gradient(circle at center, rgba(245,197,24,0.4), transparent 70%);
+  }
+
+  .btn-primary:hover::after {
+    @apply opacity-100;
+  }
+
+  /* ===== Section Titles ===== */
+  .section-tag {
+    @apply inline-flex items-center gap-2 text-brand font-mono text-xs 
+           tracking-widest uppercase mb-4;
+  }
+
+  .section-title {
+    @apply font-display text-4xl md:text-5xl font-800 text-white leading-tight;
+  }
+
+  /* ===== Card Style ===== */
+  .glass-card {
+    @apply bg-dark-700/50 backdrop-blur-sm border border-white/5 
+           transition-all duration-300 hover:border-brand/30;
+  }
+}
+
+/* ===== Utility Styles ===== */
+@layer utilities {
+
+  /* ===== Text Gradient ===== */
+  .text-gradient {
+    background: linear-gradient(135deg, #F5C518 0%, #FFD740 50%, #F5C518 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ===== Glow Effects ===== */
+  .glow-brand {
+    box-shadow: 0 0 30px var(--brand-glow), 0 0 60px rgba(245, 197, 24, 0.1);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 40px rgba(245, 197, 24, 0.5);
+  }
+
+  /* ===== Noise Texture Overlay ===== */
+  /* بيضيف تكستشر دقيق على الخلفية عشان يبان أعمق */
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ===== Grid Pattern Background ===== */
+  .grid-bg {
+    background-image: 
+      linear-gradient(rgba(245, 197, 24, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 197, 24, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* ===== Font Weights via Tailwind ===== */
+  .font-700 { font-weight: 700; }
+  .font-800 { font-weight: 800; }
+}
+
+/* ===== Custom Animations ===== */
+
+/* Animation لـ Hero Section */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تأثير الـ Typing على النص */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease forwards;
+}
+
+/* Stagger delays - بيخلي كل عنصر يظهر بعد التاني */
+.delay-100 { animation-delay: 0.1s; opacity: 0; }
+.delay-200 { animation-delay: 0.2s; opacity: 0; }
+.delay-300 { animation-delay: 0.3s; opacity: 0; }
+.delay-400 { animation-delay: 0.4s; opacity: 0; }
+.delay-500 { animation-delay: 0.5s; opacity: 0; }
+.delay-600 { animation-delay: 0.6s; opacity: 0; }
+
+/* ===== Responsive Video Placeholder ===== */
+.video-placeholder {
+  @apply relative bg-dark-600 border border-white/5 overflow-hidden;
+  aspect-ratio: 16 / 9; /* نسبة الفيديو الاستاندرد */
+}
+
+/* ===== Input Focus Styles ===== */
+.form-input {
+  @apply w-full bg-dark-600 border border-white/10 text-white px-4 py-3
+         font-body text-sm placeholder-white/30
+         focus:outline-none focus:border-brand/60 focus:bg-dark-500
+         transition-all duration-200;
+}
