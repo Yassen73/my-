@@ -162,6 +162,7 @@ const SYS_I=`أنت «محرر كتابك»: محرر ومؤلف مشارك دا
 - تقبل أي فكرة عادية بحماس، وتقبل أيضًا الموضوعات الجريئة: رومانسية وعلاقات، صراع وعنف درامي، سياسة ودين وتاريخ حساس، قضايا اجتماعية، أدب مظلم وشخصيات رمادية، سخرية لاذعة. تتعامل معها بنضج وفن دون وعظ ولا استنكار ولا تحذيرات في غير موضعها، ولا تقل «لا أستطيع» لشيء عادي. لا ترفض إلا ما هو إجرامي صريح (جنس مع قاصرين، أو تعليمات عملية لإيذاء حقيقي)، وحينها ترفض بلطف في سطر وتقترح بديلًا قريبًا من هدفه.
 - لا تتعجل. تجمع على مهل تفاصيل كثيرة: الفكرة الأساسية، القارئ المستهدف، الهدف من الكتاب، نوعه (رواية، تطوير ذات، دليل، سيرة، شعر…)، النبرة والأسلوب، اللغة، الطول وعدد الفصول، العنوان المبدئي، اسم المؤلف، إن كان يريد مقدمة وإهداء واقتباسًا وبسملة، الألوان والشعور البصري للغلاف، الأفكار والقصص التي لا بد أن تظهر، وما يجب تجنبه.
 - لا تقترح بدء الكتابة ولا تضع العلامة [[READY]] إلا بعد أن تغطي معظم ما سبق فعلًا. عندها لخّص كل ما فهمته في نقاط مرتبة واسأل إن كان يريد تعديل أي شيء، فإن أكّد بوضوح فضع العلامة [[READY]] في آخر ردك.
+- اكتب نصًا عاديًا فقط: ممنوع الجداول وعلامات ## و ** و | والرموز التنسيقية. للتلخيص استخدم سطورًا قصيرة تبدأ بشرطة.
 - لا تذكر أنك ذكاء اصطناعي ولا تتحدث عن نماذج أو مفاتيح.`;
 const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
@@ -172,17 +173,17 @@ try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};
 function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
 $('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
 
-const MODELS=['openai/gpt-oss-120b','llama-3.3-70b-versatile'];
+const MODELS=['openai/gpt-oss-120b','openai/gpt-oss-20b','llama-3.3-70b-versatile','llama-3.1-8b-instant'];
 async function ai(system,messages,max=4000,json=0){
  const key=(CONFIG.apiKey||'').trim();let last;
  for(const m of MODELS){for(let t=0;t<4;t++){
   const body={model:m,max_tokens:max+(/gpt-oss/.test(m)?4000:0),temperature:json?.7:.9,messages:[{role:'system',content:system},...messages]};
   if(json)body.response_format={type:'json_object'};
-  let r;try{r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify(body)})}catch(x){last=new Error('تعذّر الاتصال بالإنترنت');break}
+  let r;try{r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify(body)})}catch(x){last=last||new Error('تعذّر الاتصال بالإنترنت');break}
   if(r.status==429&&t<3){toast('المحرر مشغول لحظات، سأكمل تلقائيًا…');await new Promise(z=>setTimeout(z,Math.min(60,parseFloat(r.headers.get('retry-after'))||20)*1000));continue}
   const j=await r.json().catch(()=>({}));
-  if(!r.ok||j.error){last=new Error(j.error?.message||('خطأ '+r.status));break}
-  const txt=j.choices?.[0]?.message?.content||'';if(!txt){last=new Error('رد فارغ، حاول مرة أخرى');break}
+  if(!r.ok||j.error){last=last||new Error(m+' ← '+(j.error?.message||('خطأ '+r.status)));break}
+  const txt=j.choices?.[0]?.message?.content||'';if(!txt){last=last||new Error('رد فارغ، حاول مرة أخرى');break}
   return txt}}
  throw last}
 const parseJ=s=>JSON.parse(s.slice(s.indexOf('{'),s.lastIndexOf('}')+1));
@@ -191,7 +192,7 @@ function ov(on,t,s,f){$('#ov').hidden=!on;if(on){$('#ovt').textContent=t||'';$('
 
 /* ---------- الحوار ---------- */
 const NEED=7,uc=()=>S.chat.filter(m=>m.role=='user').length;
-function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;
+function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content.replace(/[*#|]+/g,'').replace(/^\s*-{3,}.*$/gm,'')).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;
  const c=Math.min(uc(),NEED);$('#mt').textContent=c<NEED?`اكتمال التفاصيل: ${c} من ${NEED} — كمّل الحوار ليخرج الكتاب أدق`:'✓ التفاصيل كافية، تقدر تبدأ الكتابة الآن';$('#mf').style.width=(c/NEED*100)+'%';$('#gen').classList.toggle('hot',c>=NEED)}
 async function send(){const v=$('#msg').value.trim();if(!v)return;$('#msg').value='';S.chat.push({role:'user',content:v});drawChat();busy(1);
  try{let r=await ai(SYS_I+(uc()<NEED?'\n\n(ملاحظة داخلية: ما زالت تنقصنا تفاصيل كثيرة، لا تضع [[READY]] ولا تقترح البدء بالكتابة الآن.)':''),S.chat.slice(-40),2500);
