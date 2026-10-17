@@ -81,6 +81,7 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
  <div id="chatbox"></div>
  <div class="row"><textarea id="msg" rows="2" placeholder="اكتب أو اضغط الميكروفون وتكلم…" style="flex:6"></textarea><button id="mic" style="flex:1">🎙</button><button id="sendb" class="pri" style="flex:1.4">أرسل</button></div>
  <button id="gen" class="wide">ولّد الكتاب من الحوار</button>
+ <button id="newc" class="wide">حوار جديد</button>
 </div></section>
 
 <section id="t-pages" hidden><div class="cols">
@@ -132,7 +133,8 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 <dialog id="dlg">
  <b>ربط الذكاء الاصطناعي</b>
  <p style="font-size:13px">ضع مفتاح Gemini المجاني في CONFIG.apiKey أعلى الكود. للنشر الحقيقي اربط هنا Worker حتى لا يظهر مفتاحك لأي زائر.</p>
- <label>رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
+ <label>مفتاح Gemini (يُحفظ في متصفحك فقط)</label><input id="ekey" dir="ltr" placeholder="AIza...">
+ <label>أو رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
  <label>اسم النموذج (اختياري)</label><input id="emodel" dir="ltr" placeholder="اتركه فارغًا لاستخدام نموذج الكود">
  <details><summary>كود الـ Worker (ضع المفتاح في ANTHROPIC_API_KEY)</summary><pre>export default{async fetch(r,env){
 const h={'access-control-allow-origin':'*','access-control-allow-headers':'content-type'};
@@ -146,7 +148,7 @@ return new Response(await x.text(),{status:x.status,headers:{...h,'content-type'
 
 <script>
 /* مجاني: مفتاح Gemini من aistudio.google.com/apikey — وللتحويل لـ Claude اجعل provider:'anthropic' */
-const CONFIG={provider:'gemini',apiKey:'AQ.Ab8RN6IBjeU9tHMJi844W_asHeCMvhrnxRH72OeP7BuB3By4Vw',smartModel:'gemini-2.5-pro',model:'gemini-2.5-flash'};
+const CONFIG={provider:'gemini',apiKey:'',smartModel:'gemini-2.5-pro',model:'gemini-2.5-flash'};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SIZES={'A5':[148,210],'A4':[210,297],'B5':[176,250],'14×21':[140,210],'17×24':[170,240],'جيب 11×18':[110,180]};
 const FONTS=['Amiri','Noto Naskh Arabic','Cairo','Tajawal','Reem Kufi','Georgia'];
@@ -161,14 +163,14 @@ const Q=['','لمن تكتب هذا الكتاب؟ من هو القارئ؟','م
 const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
 const busy=x=>document.body.classList.toggle('busy',!!x);
-const errMsg=e=>e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
+const errMsg=e=>/API key/i.test(e.message)?'المفتاح غير صحيح: انسخه من aistudio.google.com/apikey كاملًا وبدون مسافات':e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
 function save(){try{localStorage.kt1=JSON.stringify({book:S.book,d:S.d,chat:S.chat,ep:S.ep,ready:S.ready,logoIdea:S.logoIdea})}catch(e){}}
 try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};S.d={...DEF,...j.d};S.chat=j.chat||[];S.ep=j.ep||S.ep;S.ready=j.ready;S.logoIdea=j.logoIdea||''}}catch(e){}
 function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
 $('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
 
 async function ai(system,messages,max=4000){
- const e=S.ep,C=CONFIG,key=C.apiKey;if(!e.url&&!key)throw new Error('NOAI');
+ const e=S.ep,C=CONFIG,key=(e.key||C.apiKey||'').trim();if(!e.url&&!key)throw new Error('NOAI');
  const ms=e.model?[e.model]:C.provider=='gemini'?[C.smartModel,C.model]:[C.model];let last;
  for(const m of ms){for(let t=0;t<3;t++){let r;
   if(e.url)r=await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:e.model||undefined,max_tokens:max,system,messages})});
@@ -206,7 +208,7 @@ async function gen(){if(!S.chat.some(m=>m.role=='user'))return toast('ابدأ �
    (r.pages||[]).forEach((p,k)=>pages.push({h:k?'':c.h,t:p.t||''}))}
   toast('تم! الكتاب جاهز')}catch(e){toast(errMsg(e))}
  if(o&&pages.length)applyBook(o,pages);busy(0);refresh();save()}
-$('#gen').onclick=gen;
+$('#gen').onclick=gen;$('#newc').onclick=()=>{S.chat=[];S.ready=false;save();drawChat()};
 
 /* ---------- الصفحات ---------- */
 const paras=t=>String(t||'').split(/\n+/).filter(Boolean).map(s=>`<p>${esc(s)}</p>`).join('');
@@ -306,8 +308,8 @@ const TABS=[['chat','١ الحوار'],['pages','٢ الصفحات'],['design','
 function refresh(){$('#nav').innerHTML=TABS.map(([k,t])=>`<button data-t="${k}" class="${S.tab==k?'on':''}">${t}</button>`).join('');
  document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!='t-'+S.tab);({chat:drawChat,pages:drawPages,design:drawDesign,cover:drawCover,out:drawOut})[S.tab]()}
 $('#nav').onclick=e=>{const t=e.target.dataset.t;if(t){S.tab=t;refresh()}};
-$('#gear').onclick=()=>{$('#eurl').value=S.ep.url;$('#emodel').value=S.ep.model;$('#dlg').showModal()};
-$('#esave').onclick=()=>{S.ep={url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast(S.ep.url?'تم ربط الـ Worker':'سيُستخدم المفتاح الموجود في الكود')};
+$('#gear').onclick=()=>{$('#ekey').value=S.ep.key||'';$('#eurl').value=S.ep.url;$('#emodel').value=S.ep.model;$('#dlg').showModal()};
+$('#esave').onclick=()=>{S.ep={key:$('#ekey').value.trim(),url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast('تم الحفظ')};
 refresh();
 </script>
 </body>
