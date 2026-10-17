@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>كتابك — اصنع كتابك بالذكاء الاصطناعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14213d;--gold:#e9b949;--desk:#d9dde3;--ink:#151a26;--line:#c4cad4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--desk);color:var(--ink);font:15px/1.6 Tajawal,sans-serif}
+header{background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px;position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.brand{font:700 24px 'Reem Kufi',serif;color:var(--gold)}
+nav{display:flex;gap:4px;flex:1;overflow-x:auto}
+nav button{background:none;border:0;color:#cfd6e4;padding:8px 12px;font:inherit;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:#fff;border-color:var(--gold)}
+header .tools button{background:#26365c;color:#fff;border:0;padding:6px 10px;border-radius:4px;cursor:pointer;font:inherit}
+#bar{display:none;height:3px;background:linear-gradient(90deg,var(--gold),transparent);animation:sl 1s infinite linear;background-size:200% 100%;position:sticky;top:52px;z-index:5}
+.busy #bar{display:block}@keyframes sl{to{background-position:-200% 0}}
+main{max-width:1180px;margin:0 auto;padding:16px}
+section[hidden]{display:none}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,470px);gap:18px;align-items:start}
+@media(max-width:900px){.cols{grid-template-columns:1fr}}
+.panel{background:#fff;border-radius:4px;padding:14px;border:1px solid var(--line)}
+button{font:inherit;cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);padding:7px 12px;border-radius:4px}
+button.pri,button.hot{background:var(--navy);color:#fff}
+button.wide{width:100%;margin-top:10px;padding:11px}
+button:disabled{opacity:.5}
+input,select,textarea{font:inherit;width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+input[type=color]{padding:2px;height:36px}input[type=checkbox]{width:auto}
+label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px}
+.row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.row>*{flex:1}
+#chatbox{height:52vh;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.m{max-width:85%;padding:9px 13px;border-radius:12px;white-space:normal}
+.m.a{background:#eef1f6;align-self:flex-start}.m.u{background:var(--navy);color:#fff;align-self:flex-end}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.fg .chk{display:flex;gap:8px;align-items:center;margin-top:14px}.fg .chk label{margin:0}
+.stage{background:#b9c0cb;padding:16px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;border-radius:4px}
+.stage>div{box-shadow:0 2px 10px #0004}
+#grid{display:flex;flex-wrap:wrap;gap:10px;background:#b9c0cb;padding:12px;border-radius:4px}
+.th{box-shadow:0 1px 5px #0004;cursor:pointer;outline:3px solid transparent}.th.on{outline-color:var(--gold)}
+.nv{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+#warn{color:#a4161a;font-weight:700}
+.ck{list-style:none;padding:0;margin:0}.ck li{padding:6px 0;border-bottom:1px solid #eceff3}.ck li::before{content:"✓ ";color:#18794e;font-weight:700}.ck li.no::before{content:"✗ ";color:#a4161a}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;display:none;z-index:20;max-width:90vw}
+dialog{border:0;border-radius:6px;max-width:560px;width:92vw;padding:18px}
+pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;font-size:12px}
+.logo svg,.logo img{width:100%;height:100%;object-fit:contain}
+#printRoot,#meas{display:none}#meas{display:block}
+</style>
+<style id="sc">
+.sheet{width:var(--w);height:var(--h);position:relative;overflow:hidden;background:var(--pp);color:var(--ik);font:var(--fs)/var(--lh) var(--ff);text-align:var(--al);flex:none;box-sizing:border-box}
+.sheet .in{height:100%;overflow:hidden}.sheet .in>.c{min-height:100%}
+.sheet p{margin:0 0 .65em}
+.sheet h2{color:var(--pc);font-size:1.7em;line-height:1.4;margin:0 0 .7em;text-align:start}
+.hs-rule h2{padding-bottom:.25em;border-bottom:.4mm solid var(--pc)}
+.hs-orn h2{text-align:center}.hs-orn h2::after{content:"✦";display:block;font-size:.5em;margin-top:.3em}
+.pn{position:absolute;bottom:8mm;left:0;right:0;text-align:center;font-size:.8em;opacity:.7}
+.tp,.dd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;text-align:center}
+.tp .logo{width:26mm;height:26mm;margin-bottom:10mm}.tp h1{color:var(--pc);font-size:2.4em;line-height:1.3;margin:0 0 .4em}.tp .au{margin-top:12mm;font-weight:700}
+.dd{font-size:1.2em;font-style:italic;padding:0 10mm}
+.cr{display:flex;flex-direction:column;justify-content:flex-end;min-height:100%;font-size:.8em;text-align:start}
+.tr{display:flex;gap:.5em;align-items:baseline;margin:.35em 0}.tr i{flex:1;border-bottom:1px dotted currentColor;opacity:.5}
+.cov::before{content:"";position:absolute;inset:7mm;border:.35mm solid currentColor;opacity:.45;pointer-events:none}
+.cov .cin{display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;padding:6mm 0}
+.cov .logo{width:34mm;height:34mm}.cov .logo.s{width:16mm;height:16mm}
+.cov h1{font-size:calc(var(--w)*.085);line-height:1.3;margin:0}.cov .sub{font-size:1.2em;margin:.4em 0 0}.cov .au{font-size:1.3em;font-weight:700;margin:0}
+.cov .bl{font-size:1.05em;margin:auto 0}
+.pg{box-sizing:border-box;width:calc(var(--w) + var(--b)*2);height:calc(var(--h) + var(--b)*2);padding:var(--b);overflow:hidden}
+.spn{display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font:700 11pt var(--ff);flex:none}
+</style>
+<style id="pgrule"></style>
+<style>
+@media print{body>*:not(#printRoot){display:none!important}#printRoot{display:block!important}.pg{break-after:page;page-break-after:always;margin:0}html,body{background:#fff!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header><span class="brand">كتابك</span><nav id="nav"></nav><span class="tools"><button id="undo">↶ تراجع</button> <button id="gear">⚙ الذكاء الاصطناعي</button></span></header>
+<div id="bar"></div>
+<main>
+<section id="t-chat"><div class="panel">
+ <div id="chatbox"></div>
+ <div class="row"><textarea id="msg" rows="2" placeholder="اكتب أو اضغط الميكروفون وتكلم…" style="flex:6"></textarea><button id="mic" style="flex:1">🎙</button><button id="sendb" class="pri" style="flex:1.4">أرسل</button></div>
+ <button id="gen" class="wide">ولّد الكتاب من الحوار</button>
+</div></section>
+
+<section id="t-pages" hidden><div class="cols">
+ <div class="panel" style="position:sticky;top:64px">
+  <div id="prev" class="stage"></div>
+  <div class="nv"><button id="pv">السابقة</button><b id="pinfo"></b><button id="nx">التالية</button></div>
+  <div id="warn"></div>
+  <label>عنوان الصفحة / الفصل</label><input id="eh">
+  <label>نص الصفحة</label><textarea id="et" rows="7"></textarea>
+  <div class="row"><button id="addp">＋ صفحة بعدها</button><button id="delp">حذف</button><button id="upp">↑</button><button id="dnp">↓</button></div>
+  <label>كلّم الذكاء الاصطناعي عن هذه الصفحة</label>
+  <textarea id="pm" rows="2" placeholder="مثلًا: اجعل الفقرة الأولى أقصر وأضف مثالًا من الحياة اليومية"></textarea>
+  <div class="row"><select id="scope"><option value="p">هذه الصفحة فقط</option><option value="all">كل الكتاب</option></select><button id="goai" class="pri">نفّذ</button></div>
+  <button id="fit" class="wide">ضبط الصفحات تلقائيًا ليتسع النص</button>
+ </div>
+ <div><div id="empty" class="panel" hidden>لا توجد صفحات بعد. ابدأ بالحوار ثم اضغط «ولّد الكتاب»، أو أضف صفحة يدويًا.</div><div id="grid"></div></div>
+</div></section>
+
+<section id="t-design" hidden><div class="cols">
+ <div class="panel"><div id="dform" class="fg"></div></div>
+ <div class="panel"><div id="dprev" class="stage"></div></div>
+</div></section>
+
+<section id="t-cover" hidden><div class="cols">
+ <div class="panel">
+  <div id="bform"></div><hr>
+  <b>الشعار</b>
+  <label>وصف الشعار الذي تريده</label><input id="ldesc" placeholder="مثلًا: نخلة بسيطة داخل دائرة بألوان دافئة">
+  <div class="fg"><div><label>شكل الشعار السريع</label><select id="lstyle"><option>دائرة</option><option>درع</option><option>معيّن</option><option>كتاب</option></select></div><div><label>لون الشعار</label><input type="color" id="lcol"></div></div>
+  <div class="row"><button id="lai" class="pri">شعار بالذكاء الاصطناعي</button><button id="lloc">شعار سريع</button></div>
+  <div class="row"><label style="flex:1;cursor:pointer;border:1px solid var(--navy);padding:7px;text-align:center;border-radius:4px">ارفع شعارك<input type="file" id="lup" accept="image/*" hidden></label><button id="lrm">إزالة الشعار</button></div>
+ </div>
+ <div class="panel"><div id="cprev" class="stage"></div></div>
+</div></section>
+
+<section id="t-out" hidden><div class="cols">
+ <div class="panel"><b>قائمة ما قبل الطباعة</b><ul class="ck" id="chk"></ul>
+  <p style="font-size:13px">عند ظهور نافذة الطباعة: الوجهة «حفظ كـ PDF»، الهوامش «بدون»، وفعّل «رسومات الخلفية». الخطوط تُدمج تلقائيًا في الملف.</p></div>
+ <div class="panel"><b>التصدير</b>
+  <div class="row"><button class="pri" data-p="all">PDF كامل (غلاف + داخل + غلاف خلفي)</button></div>
+  <div class="row"><button data-p="in">PDF الداخل فقط</button><button data-p="cover">PDF الغلاف (وجهان)</button></div>
+  <div class="row"><button data-p="spread">PDF غلاف مفرود مع الكعب</button></div>
+  <div class="row"><button data-x="html">HTML</button><button data-x="md">Markdown</button><button data-x="txt">نص TXT</button></div>
+  <div class="row"><button data-x="json">حفظ المشروع</button><label style="flex:1;cursor:pointer;border:1px solid var(--navy);padding:7px;text-align:center;border-radius:4px">فتح مشروع<input type="file" id="lj" accept=".json" hidden></label><button data-x="svg">الشعار SVG</button></div>
+ </div>
+</div></section>
+</main>
+
+<dialog id="dlg">
+ <b>ربط الذكاء الاصطناعي</b>
+ <p style="font-size:13px">بدون رابط يعمل الموقع بوضع تجريبي. اربط خادمًا وسيطًا (مثل Cloudflare Worker) حتى لا يظهر مفتاحك للمستخدمين.</p>
+ <label>رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
+ <label>اسم النموذج (اختياري)</label><input id="emodel" dir="ltr" placeholder="claude-sonnet-5-5">
+ <details><summary>كود الـ Worker (ضع المفتاح في ANTHROPIC_API_KEY)</summary><pre>export default{async fetch(r,env){
+const h={'access-control-allow-origin':'*','access-control-allow-headers':'content-type'};
+if(r.method=='OPTIONS')return new Response(null,{headers:h});
+const b=await r.json();
+const x=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({...b,model:b.model||'claude-sonnet-5-5'})});
+return new Response(await x.text(),{status:x.status,headers:{...h,'content-type':'application/json'}})}}</pre></details>
+ <div class="row"><button id="esave" class="pri">حفظ</button><button onclick="$('#dlg').close()">إغلاق</button></div>
+</dialog>
+<div id="toast"></div><div id="meas"></div><div id="printRoot"></div>
+
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SIZES={'A5':[148,210],'A4':[210,297],'B5':[176,250],'14×21':[140,210],'17×24':[170,240],'جيب 11×18':[110,180]};
+const FONTS=['Amiri','Noto Naskh Arabic','Cairo','Tajawal','Reem Kufi','Georgia'];
+const FONTURL=document.querySelector('link[href*=fonts]').href;
+const DEF={size:'A5',font:'Amiri',fs:13,lh:1.9,align:'justify',dir:'rtl',hs:'rule',primary:'#1f4fd8',paper:'#ffffff',ink:'#1a1a1a',cover:'#14213d',coverInk:'#ffffff',logo:'#e9b949',inner:22,outer:15,top:18,bottom:20,pnum:1,toc:1,copyright:1,dedication:1,blank4:1,bleed:3,gsm:80};
+const EB={title:'عنوان الكتاب',subtitle:'',author:'',blurb:'',dedication:'',lang:'العربية',tone:'',logo:'',pages:[]};
+let S={tab:'chat',chat:[],ready:false,book:{...EB},sel:0,ep:{url:'',model:''},d:{...DEF},logoIdea:''},hist=[];
+const GREET='أهلًا! أنا محررك. احكِ لي بحرية: عن ماذا تريد أن يكون كتابك؟ سأسألك عن كل التفاصيل، وتقدر تغيّر أي شيء بعدها.';
+const SYS_I='أنت محرر كتب ذكي ودود داخل موقع «كتابك». مهمتك حوار لجمع كل تفاصيل الكتاب: الفكرة، القارئ، الأسلوب ونبرة الكلام، لغة الكتاب، الطول وعدد الفصول، العنوان، اسم المؤلف، الألوان والشكل العام، كلمات أو أفكار يجب أن تظهر أو تُتجنب، وأي طلب خاص. اسأل سؤالًا واحدًا قصيرًا في كل رد، وتفاعل مع إجابة المستخدم واقترح بدائل إن تردد. اكتب بلغة المستخدم. عند اكتمال التفاصيل لخّص ما فهمته في نقاط واسأل إن أراد إضافة شيء، فإن أكّد فأضف في آخر ردك العلامة [[READY]].';
+const SYS_G='أنت مؤلف ومحرر محترف. حوّل الحوار إلى كتاب كامل. أعد JSON صالحًا فقط بلا أي نص خارجه ولا علامات code بهذا الشكل: {"title":"","subtitle":"","author":"","blurb":"نبذة الغلاف الخلفي","dedication":"","lang":"","tone":"","palette":{"primary":"#hex","paper":"#hex","ink":"#hex","cover":"#hex"},"logo_idea":"وصف الشعار","pages":[{"h":"عنوان الفصل أو فارغ إن كانت الصفحة امتدادًا","t":"نص الصفحة، فقرات مفصولة بسطر فارغ"}]}. كل صفحة لا تزيد عن 110 كلمة. اكتب محتوى حقيقيًا كاملًا وعميقًا بأسلوب المستخدم ولغته، بلا عناوين وهمية، والتزم بكل طلباته حرفيًا.';
+const Q=['','لمن تكتب هذا الكتاب؟ من هو القارئ؟','ما الأسلوب الذي تريده؟ (رسمي، دافئ، ساخر، مبسّط…)','كم فصلًا تقريبًا، وما طول الكتاب؟','ما اسمك كمؤلف؟','هل هناك أفكار أو كلمات يجب أن تظهر؟'];
+const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
+const busy=x=>document.body.classList.toggle('busy',!!x);
+const errMsg=e=>e.message=='NOAI'?'اربط الذكاء الاصطناعي من زر ⚙ أولًا':(e.message||'حدث خطأ');
+function save(){try{localStorage.kt1=JSON.stringify({book:S.book,d:S.d,chat:S.chat,ep:S.ep,ready:S.ready,logoIdea:S.logoIdea})}catch(e){}}
+try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};S.d={...DEF,...j.d};S.chat=j.chat||[];S.ep=j.ep||S.ep;S.ready=j.ready;S.logoIdea=j.logoIdea||''}}catch(e){}
+function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
+$('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
+
+async function ai(system,messages,max=4000){
+ const e=S.ep;if(!e.url)throw new Error('NOAI');
+ const r=await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:e.model||undefined,max_tokens:max,system,messages})});
+ const j=await r.json();if(!r.ok||j.error)throw new Error(j.error?.message||j.error||('خطأ '+r.status));
+ return j.content?j.content.map(x=>x.text||'').join(''):(j.text||'');
+}
+const parseJ=s=>JSON.parse(s.slice(s.indexOf('{'),s.lastIndexOf('}')+1));
+
+/* ---------- الحوار ---------- */
+function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;$('#gen').classList.toggle('hot',S.ready||S.chat.length>=6)}
+async function send(){const v=$('#msg').value.trim();if(!v)return;$('#msg').value='';S.chat.push({role:'user',content:v});drawChat();busy(1);
+ try{let r;if(S.ep.url)r=await ai(SYS_I,S.chat,1500);else{const n=S.chat.filter(m=>m.role=='user').length;r=n<Q.length?Q[n]:'تمام، عندي ما يكفي. اضغط «ولّد الكتاب». [[READY]]'}
+  if(r.includes('[[READY]]')){S.ready=true;r=r.replace('[[READY]]','').trim()}S.chat.push({role:'assistant',content:r})}catch(e){toast(errMsg(e))}
+ busy(0);drawChat();save()}
+$('#sendb').onclick=send;$('#msg').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey){e.preventDefault();send()}};
+$('#mic').onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return toast('المتصفح لا يدعم الإملاء الصوتي');const r=new R();r.lang=rtl()?'ar-EG':'en-US';r.onresult=e=>{$('#msg').value+=' '+e.results[0][0].transcript};r.start();toast('تكلّم الآن…')};
+async function gen(){const u=S.chat.filter(m=>m.role=='user').map(m=>m.content);if(!u.length)return toast('ابدأ الحوار أولًا');busy(1);
+ try{let r;if(S.ep.url)r=parseJ(await ai(SYS_G,[...S.chat,{role:'user',content:'ممتاز، ولّد الكتاب كاملًا الآن بصيغة JSON فقط.'}],8000));
+  else{toast('وضع تجريبي: اربط الذكاء الاصطناعي ليكتب الكتاب كاملًا');r={title:u[0].slice(0,40),author:u[4]||'',blurb:u[0],tone:u[2]||'',pages:u.map((a,i)=>({h:['الفكرة','القارئ','الأسلوب','الفصول','المؤلف','ملاحظات'][i]||'فصل',t:a}))}}
+  snap();const b=S.book;Object.assign(b,{title:r.title||b.title,subtitle:r.subtitle||'',author:r.author||'',blurb:r.blurb||'',dedication:r.dedication||'',lang:r.lang||b.lang,tone:r.tone||'',pages:(r.pages||[]).map(p=>({h:p.h||'',t:p.t||''}))});
+  const p=r.palette||{};['primary','paper','ink','cover'].forEach(k=>p[k]&&/^#[0-9a-f]{3,8}$/i.test(p[k])&&(S.d[k]=p[k]));
+  S.logoIdea=r.logo_idea||'';b.logo=mkLogo('دائرة',(b.title||'ك').trim()[0]);S.sel=0;S.tab='pages';fitAll(1)}catch(e){toast(errMsg(e))}
+ busy(0);refresh();save()}
+$('#gen').onclick=gen;
+
+/* ---------- الصفحات ---------- */
+const paras=t=>String(t||'').split(/\n+/).filter(Boolean).map(s=>`<p>${esc(s)}</p>`).join('');
+function css(){const d=S.d,[w,h]=SIZES[d.size]||SIZES.A5;return `--w:${w}mm;--h:${h}mm;--b:${d.bleed}mm;--fs:${d.fs}pt;--lh:${d.lh};--pc:${d.primary};--pp:${d.paper};--ik:${d.ink};--ff:'${d.font}',serif;--al:${d.align}`}
+function inside(){const b=S.book,d=S.d,L=[{k:'t'}];if(d.copyright)L.push({k:'cr'});if(d.dedication&&b.dedication)L.push({k:'dd'});if(d.toc&&b.pages.some(p=>p.h))L.push({k:'toc'});b.pages.forEach((p,i)=>L.push({k:'c',p,i}));if(d.blank4)while(L.length%4)L.push({k:'bl'});return L}
+function sheet(x,n,L){const d=S.d,b=S.book,odd=n%2==1,sr=rtl()?odd:!odd,l=sr?d.outer:d.inner,r=sr?d.inner:d.outer;let h='',pn='';
+ if(x.k=='c'){h=(x.p.h?`<h2>${esc(x.p.h)}</h2>`:'')+paras(x.p.t);if(d.pnum)pn=`<div class="pn">${n}</div>`}
+ else if(x.k=='t')h=`<div class="tp"><div class="logo">${b.logo||''}</div><h1>${esc(b.title)}</h1><p>${esc(b.subtitle)}</p><p class="au">${esc(b.author)}</p></div>`;
+ else if(x.k=='cr')h=`<div class="cr"><p>© ${new Date().getFullYear()} ${esc(b.author)}</p><p>${rtl()?'جميع الحقوق محفوظة.':'All rights reserved.'}</p></div>`;
+ else if(x.k=='dd')h=`<div class="dd">${esc(b.dedication)}</div>`;
+ else if(x.k=='toc')h=`<h2>${rtl()?'المحتويات':'Contents'}</h2>`+L.filter(y=>y.k=='c'&&y.p.h).map(y=>`<div class="tr"><span>${esc(y.p.h)}</span><i></i><span>${L.indexOf(y)+1}</span></div>`).join('');
+ return `<div class="sheet hs-${d.hs}" dir="${d.dir}" style="${css()};padding:${d.top}mm ${r}mm ${d.bottom}mm ${l}mm"><div class="in"><div class="c">${h}</div></div>${pn}</div>`}
+function cov(side){const b=S.book,d=S.d;const i=side=='f'?`<div class="logo">${b.logo||''}</div><div><h1>${esc(b.title)}</h1><p class="sub">${esc(b.subtitle)}</p></div><p class="au">${esc(b.author)}</p>`:`<p class="bl">${esc(b.blurb)}</p><div class="logo s">${b.logo||''}</div>`;
+ return `<div class="sheet cov" dir="${d.dir}" style="${css()};background:${d.cover};color:${d.coverInk};padding:14mm"><div class="in cin">${i}</div></div>`}
+const mm=3.7795,zf=px=>px/(SIZES[S.d.size][0]*mm);
+function fits(p){const m=$('#meas');m.innerHTML=sheet({k:'c',p},1,[]);const i=m.querySelector('.in');return i.firstElementChild.scrollHeight<=i.clientHeight+1}
+function splitPage(p){let sep='\n\n',u=p.t.split(/\n+/).filter(Boolean);if(u.length<2){u=p.t.split(/(?<=[.!؟?])\s+/).filter(Boolean);sep=' '}if(u.length<2){u=p.t.split(/\s+/);sep=' '}if(u.length<2)return null;
+ const mk=n=>({h:p.h,t:u.slice(0,n).join(sep)});let k=u.length-1;while(k>1&&!fits(mk(k)))k--;return[mk(k),{h:'',t:u.slice(k).join(sep)}]}
+function fitAll(silent){const P=S.book.pages;let ch=0;snap();for(let i=0;i<P.length;i++){let g=0;while(!fits(P[i])&&g++<60){const s=splitPage(P[i]);if(!s)break;P.splice(i,1,s[0],s[1]);ch++}}
+ if(!ch)hist.pop();else if(!silent)toast('تم تقسيم النص على '+ch+' صفحات إضافية');return ch}
+function drawPages(keep){const P=S.book.pages,L=inside();$('#empty').hidden=!!P.length;
+ $('#grid').innerHTML=L.map((x,i)=>`<div class="th ${x.k=='c'&&x.i==S.sel?'on':''}" style="zoom:${zf(105)}" data-i="${x.k=='c'?x.i:''}">${sheet(x,i+1,L)}</div>`).join('');
+ const p=pg();$('#prev').innerHTML=p?`<div style="zoom:${zf(Math.min(420,innerWidth-70))}">${sheet({k:'c',p,i:S.sel},L.findIndex(x=>x.i===S.sel)+1,L)}</div>`:'';
+ $('#pinfo').textContent=p?`${S.sel+1} / ${P.length}`:'';$('#warn').textContent=p&&!fits(p)?'⚠ نص هذه الصفحة أطول من المساحة — اضغط «ضبط الصفحات تلقائيًا»':'';
+ if(!keep){$('#eh').value=p?p.h:'';$('#et').value=p?p.t:''}}
+$('#grid').onclick=e=>{const t=e.target.closest('.th');if(t&&t.dataset.i!==''){S.sel=+t.dataset.i;drawPages()}};
+$('#pv').onclick=()=>{S.sel=Math.max(0,S.sel-1);drawPages()};$('#nx').onclick=()=>{S.sel=Math.min(S.book.pages.length-1,S.sel+1);drawPages()};
+$('#eh').onfocus=$('#et').onfocus=snap;
+$('#eh').oninput=$('#et').oninput=()=>{if(!pg())return;pg().h=$('#eh').value;pg().t=$('#et').value;drawPages(1);save()};
+$('#addp').onclick=()=>{snap();S.book.pages.splice(S.sel+1,0,{h:'',t:''});if(S.book.pages.length>1)S.sel++;drawPages();save()};
+$('#delp').onclick=()=>{if(!pg())return;snap();S.book.pages.splice(S.sel,1);S.sel=Math.max(0,Math.min(S.sel,S.book.pages.length-1));drawPages();save()};
+const mv=d=>{const P=S.book.pages,j=S.sel+d;if(j<0||j>=P.length)return;snap();[P[S.sel],P[j]]=[P[j],P[S.sel]];S.sel=j;drawPages();save()};
+$('#upp').onclick=()=>mv(-1);$('#dnp').onclick=()=>mv(1);
+$('#fit').onclick=()=>{fitAll();drawPages();save()};
+$('#goai').onclick=async()=>{const q=$('#pm').value.trim();if(!q||!pg())return;const all=$('#scope').value=='all',b=S.book;
+ const sys=`أنت محرر كتب محترف. نفّذ طلب المستخدم حرفيًا على النص المعطى مع الحفاظ على لغة الكتاب (${b.lang}) وأسلوبه (${b.tone}) إلا إذا طُلب غير ذلك. أعد JSON صالحًا فقط: {"pages":[{"h":"","t":""}]} — ${all?'كل صفحات الكتاب بعد التعديل':'الصفحة المعدّلة (قد تصبح أكثر من صفحة إن لزم)'}، ولا تزد الصفحة عن 110 كلمة، والفقرات مفصولة بسطر فارغ.`;
+ busy(1);try{const r=parseJ(await ai(sys,[{role:'user',content:'الطلب: '+q+'\n\nالنص:\n'+JSON.stringify(all?b.pages:[pg()])}],all?8000:2000));snap();const np=r.pages.map(p=>({h:p.h||'',t:p.t||''}));if(all)b.pages=np;else b.pages.splice(S.sel,1,...np);$('#pm').value='';toast('تم التعديل')}catch(e){toast(errMsg(e))}
+ busy(0);drawPages();save()};
+
+/* ---------- التصميم ---------- */
+const N=(a,b,c)=>[a,b,c];
+const F=[['size','مقاس الكتاب','sel',Object.keys(SIZES)],['font','الخط','sel',FONTS],['fs','حجم الخط (نقطة)','num',N(9,22,.5)],['lh','تباعد الأسطر','num',N(1.2,2.6,.1)],['align','المحاذاة','sel',[['justify','ضبط'],['start','بداية'],['center','وسط']]],['dir','اتجاه الكتاب','sel',[['rtl','عربي (من اليمين)'],['ltr','لاتيني (من اليسار)']]],['hs','شكل العناوين','sel',[['rule','خط تحتها'],['plain','بسيط'],['orn','زخرفة']]],['primary','لون العناوين','col'],['paper','لون الورق','col'],['ink','لون النص','col'],['cover','لون الغلاف','col'],['coverInk','لون كلام الغلاف','col'],['inner','هامش التجليد (مم)','num',N(5,40,1)],['outer','الهامش الخارجي','num',N(5,40,1)],['top','هامش أعلى','num',N(5,40,1)],['bottom','هامش أسفل','num',N(8,40,1)],['bleed','زيادة القص Bleed','sel',[[0,'بدون'],[3,'3 مم']]],['gsm','وزن الورق (لحساب الكعب)','sel',[70,80,100]],['pnum','أرقام الصفحات','chk'],['toc','صفحة المحتويات','chk'],['copyright','صفحة الحقوق','chk'],['dedication','صفحة الإهداء','chk'],['blank4','إكمال الصفحات لمضاعف 4','chk']];
+function drawDesign(){$('#dform').innerHTML=F.map(([k,t,ty,o])=>{const v=S.d[k];let c;
+ if(ty=='sel')c=`<select data-k="${k}">${o.map(x=>{x=Array.isArray(x)?x:[x,x];return`<option value="${x[0]}" ${x[0]==v?'selected':''}>${x[1]}</option>`}).join('')}</select>`;
+ else if(ty=='num')c=`<input type="number" data-k="${k}" value="${v}" min="${o[0]}" max="${o[1]}" step="${o[2]}">`;
+ else if(ty=='col')c=`<input type="color" data-k="${k}" value="${v}">`;
+ else return`<div class="chk"><input type="checkbox" data-k="${k}" ${v?'checked':''}><label>${t}</label></div>`;
+ return`<div><label>${t}</label>${c}</div>`}).join('');dprev()}
+function dprev(){const L=inside(),i=Math.max(0,L.findIndex(x=>x.i===S.sel)),x=L[i]||{k:'t'};$('#dprev').innerHTML=`<div style="zoom:${zf(Math.min(400,innerWidth-70))}">${sheet(x,i+1,L)}</div>`}
+$('#dform').oninput=e=>{const t=e.target,k=t.dataset.k;if(!k)return;if(t.type=='checkbox')S.d[k]=+t.checked;else S.d[k]=(t.type=='number'||k=='bleed'||k=='gsm')?+t.value:t.value;dprev();save()};
+$('#dform').onfocusin=snap;
+
+/* ---------- الغلاف والشعار ---------- */
+const BF=[['title','عنوان الكتاب'],['subtitle','عنوان فرعي'],['author','اسم المؤلف'],['blurb','نبذة الغلاف الخلفي','ta'],['dedication','الإهداء','ta'],['lang','لغة الكتاب'],['tone','أسلوب الكلام ونبرته']];
+function mkLogo(st,ch){const c=S.d.logo,k=S.d.cover,sh={'دائرة':`<circle cx="100" cy="100" r="88" fill="${c}"/>`,'درع':`<path d="M100 12 178 40v52c0 48-33 80-78 96C55 172 22 140 22 92V40z" fill="${c}"/>`,'معيّن':`<rect x="38" y="38" width="124" height="124" rx="14" transform="rotate(45 100 100)" fill="${c}"/>`,'كتاب':`<path d="M18 50q41-18 82 6 41-24 82-6v104q-41-18-82 6-41-24-82-6z" fill="${c}"/>`};
+ return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">${sh[st]||sh['دائرة']}<text x="100" y="${st=='كتاب'?116:126}" text-anchor="middle" font-size="84" font-family="Amiri,serif" font-weight="700" fill="${k}">${esc(ch)}</text></svg>`}
+const clean=s=>s.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,'').replace(/<image[^>]*>/gi,'').replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,'').replace(/javascript:/gi,'');
+function drawCover(){$('#bform').innerHTML=BF.map(([k,t,ty])=>`<label>${t}</label>${ty=='ta'?`<textarea rows="3" data-b="${k}">${esc(S.book[k])}</textarea>`:`<input data-b="${k}" value="${esc(S.book[k])}">`}`).join('');$('#ldesc').value=S.logoIdea||'';$('#lcol').value=S.d.logo;cprev()}
+function cprev(){const z=zf(Math.min(250,(innerWidth-80)/2));$('#cprev').innerHTML=`<div style="zoom:${z}">${cov('f')}</div><div style="zoom:${z}">${cov('b')}</div>`}
+$('#bform').oninput=e=>{const k=e.target.dataset.b;if(!k)return;S.book[k]=e.target.value;cprev();save()};$('#bform').onfocusin=snap;
+$('#lcol').oninput=e=>{S.d.logo=e.target.value};
+$('#lloc').onclick=()=>{snap();S.d.logo=$('#lcol').value;S.book.logo=mkLogo($('#lstyle').value,(S.book.title||'ك').trim()[0]);cprev();save()};
+$('#lai').onclick=async()=>{const q=$('#ldesc').value.trim();S.logoIdea=q;busy(1);
+ try{const r=await ai('أنت مصمم شعارات. أعد كود SVG واحدًا فقط (viewBox="0 0 200 200"، أشكال هندسية نظيفة، بلا صور أو خطوط خارجية، والنص إن وُجد بخط Amiri) ولا شيء غيره. الألوان المفضلة: '+S.d.logo+' و '+S.d.cover+'.',[{role:'user',content:(q||'شعار أنيق للكتاب')+' — عنوان الكتاب: '+S.book.title}],3000);
+  const m=r.match(/<svg[\s\S]*<\/svg>/i);if(!m)throw new Error('لم يصل شعار صالح، حاول مرة أخرى');snap();S.book.logo=clean(m[0])}catch(e){toast(errMsg(e))}busy(0);cprev();save()};
+$('#lup').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{snap();S.book.logo=`<img src="${r.result}" alt="">`;cprev();save()};r.readAsDataURL(f)};
+$('#lrm').onclick=()=>{snap();S.book.logo='';cprev();save()};
+
+/* ---------- التصدير ---------- */
+function spine(){const th={70:.09,80:.1,100:.125}[S.d.gsm]||.1;return Math.max(2,Math.round((inside().length/2*th+.5)*10)/10)}
+function pageRule(m){const [w,h]=SIZES[S.d.size],b=+S.d.bleed,W=m=='spread'?2*w+spine()+2*b:w+2*b;return`@page{size:${W}mm ${h+2*b}mm;margin:0}`}
+const pgw=(i,bg)=>`<div class="pg" style="${css()};background:${bg}">${i}</div>`;
+function spread(){const d=S.d,sp=spine(),s=`<div class="spn" style="width:${sp}mm;height:var(--h);background:${d.cover};color:${d.coverInk}"><span>${esc(S.book.title)}</span></div>`,o=rtl()?[cov('f'),s,cov('b')]:[cov('b'),s,cov('f')];
+ return`<div class="pg" style="${css()};background:${d.cover};width:calc(var(--w)*2 + ${sp}mm + var(--b)*2)"><div style="display:flex;direction:ltr">${o.join('')}</div></div>`}
+function printHTML(m){const d=S.d,L=inside(),ins=()=>L.map((x,i)=>pgw(sheet(x,i+1,L),d.paper)).join(''),cf=()=>pgw(cov('f'),d.cover),cb=()=>pgw(cov('b'),d.cover);
+ return m=='in'?ins():m=='cover'?cf()+cb():m=='spread'?spread():cf()+ins()+cb()}
+function doPrint(m){if(!has())return toast('لا يوجد كتاب بعد');fitAll(1);$('#pgrule').textContent=pageRule(m);$('#printRoot').innerHTML=printHTML(m);setTimeout(()=>print(),150)}
+onafterprint=()=>{$('#printRoot').innerHTML=''};
+function dl(n,m,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:m+';charset=utf-8'}));a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)}
+function exportX(k){const b=S.book,n=(b.title||'book').replace(/[\\/:*?"<>|\s]+/g,'-');
+ const txt=h=>`${b.title}\n${b.subtitle}\n${b.author}\n\n`+b.pages.map(p=>(p.h?(h?'## ':'')+p.h+'\n\n':'')+p.t).join('\n\n');
+ if(k=='md')dl(n+'.md','text/markdown',`# ${b.title}\n\n${b.subtitle?`*${b.subtitle}*\n\n`:''}${b.author?`**${b.author}**\n\n`:''}`+b.pages.map(p=>(p.h?`## ${p.h}\n\n`:'')+p.t).join('\n\n'));
+ else if(k=='txt')dl(n+'.txt','text/plain',txt(0));
+ else if(k=='json')dl(n+'.ktabak.json','application/json',JSON.stringify({book:b,d:S.d}));
+ else if(k=='svg'){if(!b.logo.startsWith('<svg'))return toast('الشعار الحالي ليس SVG');dl(n+'-logo.svg','image/svg+xml',b.logo)}
+ else if(k=='html')dl(n+'.html','text/html',`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>${esc(b.title)}</title><link href="${FONTURL}" rel="stylesheet"><style>${$('#sc').textContent}body{background:#ccc;margin:0}.pg{margin:12px auto}.logo svg,.logo img{width:100%;height:100%;object-fit:contain}${pageRule('all')}@media print{.pg{margin:0;break-after:page}body{background:#fff}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>${printHTML('all')}</body></html>`)}
+document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>doPrint(b.dataset.p));
+document.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>has()||b.dataset.x=='svg'?exportX(b.dataset.x):toast('لا يوجد كتاب بعد'));
+$('#lj').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);snap();S.book={...EB,...o.book};S.d={...DEF,...o.d};S.sel=0;refresh();save();toast('تم فتح المشروع')}catch(x){toast('ملف غير صالح')}};r.readAsText(f)};
+function drawOut(){if(!has()){$('#chk').innerHTML='<li class="no">لا يوجد كتاب بعد. ابدأ من «الحوار».</li>';return}
+ const L=inside(),b=S.book,[w,h]=SIZES[S.d.size],over=b.pages.filter(p=>!fits(p)).length;
+ const it=[[L.length%4==0,`عدد الصفحات الداخلية ${L.length}${L.length%4?' — ليس من مضاعفات 4، فعّل «إكمال الصفحات» في التصميم':' (مضاعف 4)'}`],[!over,over?`${over} صفحة نصها أطول من المساحة — اضغط «ضبط تلقائي» في الصفحات`:'كل النصوص تتسع في صفحاتها'],[!!(b.title&&b.author),'العنوان واسم المؤلف '+(b.title&&b.author?'مكتملان':'ناقصان')],[!!b.logo,b.logo?'الشعار موجود':'لا يوجد شعار'],[!!b.blurb,b.blurb?'نبذة الغلاف الخلفي موجودة':'نبذة الغلاف الخلفي فارغة'],[1,`المقاس بعد القص ${w}×${h} مم، ومع الـBleed ${w+2*S.d.bleed}×${h+2*S.d.bleed} مم`],[1,`سُمك الكعب التقريبي ${spine()} مم (تأكد منه مع المطبعة)`]];
+ $('#chk').innerHTML=it.map(([o,t])=>`<li class="${o?'':'no'}">${t}</li>`).join('')}
+
+/* ---------- عام ---------- */
+const TABS=[['chat','١ الحوار'],['pages','٢ الصفحات'],['design','٣ التصميم'],['cover','٤ الغلاف والشعار'],['out','٥ التصدير']];
+function refresh(){$('#nav').innerHTML=TABS.map(([k,t])=>`<button data-t="${k}" class="${S.tab==k?'on':''}">${t}</button>`).join('');
+ document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!='t-'+S.tab);({chat:drawChat,pages:drawPages,design:drawDesign,cover:drawCover,out:drawOut})[S.tab]()}
+$('#nav').onclick=e=>{const t=e.target.dataset.t;if(t){S.tab=t;refresh()}};
+$('#gear').onclick=()=>{$('#eurl').value=S.ep.url;$('#emodel').value=S.ep.model;$('#dlg').showModal()};
+$('#esave').onclick=()=>{S.ep={url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast(S.ep.url?'تم ربط الذكاء الاصطناعي':'وضع تجريبي')};
+refresh();
+</script>
+</body>
+</html>
