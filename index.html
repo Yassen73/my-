@@ -132,8 +132,8 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 
 <dialog id="dlg">
  <b>ربط الذكاء الاصطناعي</b>
- <p style="font-size:13px">ضع مفتاح Gemini المجاني في CONFIG.apiKey أعلى الكود. للنشر الحقيقي اربط هنا Worker حتى لا يظهر مفتاحك لأي زائر.</p>
- <label>مفتاح Gemini (يُحفظ في متصفحك فقط)</label><input id="ekey" dir="ltr" placeholder="AIza...">
+ <p style="font-size:13px">المفتاح المجاني من console.groq.com/keys (يبدأ بـ gsk_). للنشر الحقيقي اربط هنا Worker حتى لا يظهر مفتاحك لأي زائر.</p>
+ <label>مفتاح الذكاء الاصطناعي (يُحفظ في متصفحك فقط)</label><input id="ekey" dir="ltr" placeholder="gsk_...">
  <label>أو رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
  <label>اسم النموذج (اختياري)</label><input id="emodel" dir="ltr" placeholder="اتركه فارغًا لاستخدام نموذج الكود">
  <details><summary>كود الـ Worker (ضع المفتاح في ANTHROPIC_API_KEY)</summary><pre>export default{async fetch(r,env){
@@ -147,8 +147,8 @@ return new Response(await x.text(),{status:x.status,headers:{...h,'content-type'
 <div id="toast"></div><div id="meas"></div><div id="printRoot"></div>
 
 <script>
-/* مجاني: مفتاح Gemini من aistudio.google.com/apikey — وللتحويل لـ Claude اجعل provider:'anthropic' */
-const CONFIG={provider:'gemini',apiKey:'',smartModel:'gemini-2.5-pro',model:'gemini-2.5-flash'};
+/* ضع مفتاحك هنا أو من زر ⚙ داخل الموقع. المفتاح المجاني: console.groq.com/keys (يبدأ بـ gsk_) */
+const CONFIG={provider:'groq',apiKey:''};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SIZES={'A5':[148,210],'A4':[210,297],'B5':[176,250],'14×21':[140,210],'17×24':[170,240],'جيب 11×18':[110,180]};
 const FONTS=['Amiri','Noto Naskh Arabic','Cairo','Tajawal','Reem Kufi','Georgia'];
@@ -163,23 +163,26 @@ const Q=['','لمن تكتب هذا الكتاب؟ من هو القارئ؟','م
 const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
 const busy=x=>document.body.classList.toggle('busy',!!x);
-const errMsg=e=>/API key/i.test(e.message)?'المفتاح غير صحيح: انسخه من aistudio.google.com/apikey كاملًا وبدون مسافات':e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
+const errMsg=e=>/API key/i.test(e.message)?'المفتاح غير صحيح أو غير مدعوم: انسخه كاملًا وبدون مسافات':e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
 function save(){try{localStorage.kt1=JSON.stringify({book:S.book,d:S.d,chat:S.chat,ep:S.ep,ready:S.ready,logoIdea:S.logoIdea})}catch(e){}}
 try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};S.d={...DEF,...j.d};S.chat=j.chat||[];S.ep=j.ep||S.ep;S.ready=j.ready;S.logoIdea=j.logoIdea||''}}catch(e){}
 function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
 $('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
 
+const MODELS={groq:['openai/gpt-oss-120b','llama-3.3-70b-versatile'],gemini:['gemini-2.5-pro','gemini-2.5-flash'],anthropic:['claude-sonnet-5-5']};
 async function ai(system,messages,max=4000){
  const e=S.ep,C=CONFIG,key=(e.key||C.apiKey||'').trim();if(!e.url&&!key)throw new Error('NOAI');
- const ms=e.model?[e.model]:C.provider=='gemini'?[C.smartModel,C.model]:[C.model];let last;
- for(const m of ms){for(let t=0;t<3;t++){let r;
+ const pv=/^gsk_/.test(key)?'groq':/^sk-ant/.test(key)?'anthropic':/^(AIza|AQ\.)/.test(key)?'gemini':C.provider;
+ const ms=e.model?[e.model]:MODELS[pv]||MODELS.groq;let last;
+ for(const m of ms){for(let t=0;t<4;t++){let r;
   if(e.url)r=await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:e.model||undefined,max_tokens:max,system,messages})});
-  else if(C.provider=='gemini')r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:messages.map(x=>({role:x.role=='assistant'?'model':'user',parts:[{text:x.content}]})),generationConfig:{maxOutputTokens:max+8000}})});
+  else if(pv=='gemini')r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:messages.map(x=>({role:x.role=='assistant'?'model':'user',parts:[{text:x.content}]})),generationConfig:{maxOutputTokens:max+8000}})});
+  else if(pv=='groq')r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify({model:m,max_tokens:max+(/gpt-oss/.test(m)?4000:0),messages:[{role:'system',content:system},...messages]})});
   else r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:m,max_tokens:max,system,messages})});
-  if(r.status==429&&t<2){toast('الخدمة المجانية مزدحمة، انتظر قليلًا…');await new Promise(z=>setTimeout(z,15000));continue}
+  if(r.status==429&&t<3){toast('الخدمة المجانية مزدحمة، انتظر قليلًا…');await new Promise(z=>setTimeout(z,(parseFloat(r.headers.get('retry-after'))||20)*1000));continue}
   const j=await r.json().catch(()=>({}));
   if(!r.ok||j.error){last=new Error(j.error?.message||j.error||('خطأ '+r.status));break}
-  const txt=j.candidates?(j.candidates[0]?.content?.parts||[]).map(x=>x.text||'').join(''):j.content?j.content.map(x=>x.text||'').join(''):(j.text||'');
+  const txt=j.choices?(j.choices[0]?.message?.content||''):j.candidates?(j.candidates[0]?.content?.parts||[]).map(x=>x.text||'').join(''):j.content?j.content.map(x=>x.text||'').join(''):(j.text||'');
   if(!txt){last=new Error('رد فارغ من النموذج');break}
   return txt}}
  throw last}
