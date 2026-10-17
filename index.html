@@ -45,7 +45,7 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px}
 dialog{border:0;border-radius:6px;max-width:560px;width:92vw;padding:18px}
 pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;font-size:12px}
 .logo svg,.logo img{width:100%;height:100%;object-fit:contain}
-#printRoot,#meas{display:none}#meas{display:block}
+#printRoot{display:none}#meas{display:block;position:absolute;left:-99999px;top:0;visibility:hidden}
 </style>
 <style id="sc">
 .sheet{width:var(--w);height:var(--h);position:relative;overflow:hidden;background:var(--pp);color:var(--ik);font:var(--fs)/var(--lh) var(--ff);text-align:var(--al);flex:none;box-sizing:border-box}
@@ -131,7 +131,7 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 
 <dialog id="dlg">
  <b>ربط الذكاء الاصطناعي</b>
- <p style="font-size:13px">بدون رابط يعمل الموقع بوضع تجريبي. اربط خادمًا وسيطًا (مثل Cloudflare Worker) حتى لا يظهر مفتاحك للمستخدمين.</p>
+ <p style="font-size:13px">للتجربة ضع مفتاحك في CONFIG.apiKey أعلى الكود. للنشر الحقيقي اربط هنا Worker حتى لا يظهر مفتاحك لأي زائر.</p>
  <label>رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
  <label>اسم النموذج (اختياري)</label><input id="emodel" dir="ltr" placeholder="claude-sonnet-5-5">
  <details><summary>كود الـ Worker (ضع المفتاح في ANTHROPIC_API_KEY)</summary><pre>export default{async fetch(r,env){
@@ -145,6 +145,8 @@ return new Response(await x.text(),{status:x.status,headers:{...h,'content-type'
 <div id="toast"></div><div id="meas"></div><div id="printRoot"></div>
 
 <script>
+/* ضع مفتاح Anthropic هنا للتجربة فقط — أي شخص يفتح الكود يقدر يراه */
+const CONFIG={apiKey:'',model:'claude-sonnet-5-5'};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SIZES={'A5':[148,210],'A4':[210,297],'B5':[176,250],'14×21':[140,210],'17×24':[170,240],'جيب 11×18':[110,180]};
 const FONTS=['Amiri','Noto Naskh Arabic','Cairo','Tajawal','Reem Kufi','Georgia'];
@@ -159,15 +161,16 @@ const Q=['','لمن تكتب هذا الكتاب؟ من هو القارئ؟','م
 const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
 const busy=x=>document.body.classList.toggle('busy',!!x);
-const errMsg=e=>e.message=='NOAI'?'اربط الذكاء الاصطناعي من زر ⚙ أولًا':(e.message||'حدث خطأ');
+const errMsg=e=>e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
 function save(){try{localStorage.kt1=JSON.stringify({book:S.book,d:S.d,chat:S.chat,ep:S.ep,ready:S.ready,logoIdea:S.logoIdea})}catch(e){}}
 try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};S.d={...DEF,...j.d};S.chat=j.chat||[];S.ep=j.ep||S.ep;S.ready=j.ready;S.logoIdea=j.logoIdea||''}}catch(e){}
 function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
 $('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
 
 async function ai(system,messages,max=4000){
- const e=S.ep;if(!e.url)throw new Error('NOAI');
- const r=await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:e.model||undefined,max_tokens:max,system,messages})});
+ const e=S.ep,key=CONFIG.apiKey;if(!e.url&&!key)throw new Error('NOAI');
+ const body=JSON.stringify({model:e.model||CONFIG.model,max_tokens:max,system,messages});
+ const r=e.url?await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body}):await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body});
  const j=await r.json();if(!r.ok||j.error)throw new Error(j.error?.message||j.error||('خطأ '+r.status));
  return j.content?j.content.map(x=>x.text||'').join(''):(j.text||'');
 }
@@ -176,18 +179,26 @@ const parseJ=s=>JSON.parse(s.slice(s.indexOf('{'),s.lastIndexOf('}')+1));
 /* ---------- الحوار ---------- */
 function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;$('#gen').classList.toggle('hot',S.ready||S.chat.length>=6)}
 async function send(){const v=$('#msg').value.trim();if(!v)return;$('#msg').value='';S.chat.push({role:'user',content:v});drawChat();busy(1);
- try{let r;if(S.ep.url)r=await ai(SYS_I,S.chat,1500);else{const n=S.chat.filter(m=>m.role=='user').length;r=n<Q.length?Q[n]:'تمام، عندي ما يكفي. اضغط «ولّد الكتاب». [[READY]]'}
-  if(r.includes('[[READY]]')){S.ready=true;r=r.replace('[[READY]]','').trim()}S.chat.push({role:'assistant',content:r})}catch(e){toast(errMsg(e))}
+ try{let r=await ai(SYS_I,S.chat,1500);
+  if(r.includes('[[READY]]')){S.ready=true;r=r.replace('[[READY]]','').trim()}S.chat.push({role:'assistant',content:r})}catch(e){S.chat.pop();$('#msg').value=v;toast(errMsg(e))}
  busy(0);drawChat();save()}
 $('#sendb').onclick=send;$('#msg').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey){e.preventDefault();send()}};
 $('#mic').onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return toast('المتصفح لا يدعم الإملاء الصوتي');const r=new R();r.lang=rtl()?'ar-EG':'en-US';r.onresult=e=>{$('#msg').value+=' '+e.results[0][0].transcript};r.start();toast('تكلّم الآن…')};
-async function gen(){const u=S.chat.filter(m=>m.role=='user').map(m=>m.content);if(!u.length)return toast('ابدأ الحوار أولًا');busy(1);
- try{let r;if(S.ep.url)r=parseJ(await ai(SYS_G,[...S.chat,{role:'user',content:'ممتاز، ولّد الكتاب كاملًا الآن بصيغة JSON فقط.'}],8000));
-  else{toast('وضع تجريبي: اربط الذكاء الاصطناعي ليكتب الكتاب كاملًا');r={title:u[0].slice(0,40),author:u[4]||'',blurb:u[0],tone:u[2]||'',pages:u.map((a,i)=>({h:['الفكرة','القارئ','الأسلوب','الفصول','المؤلف','ملاحظات'][i]||'فصل',t:a}))}}
-  snap();const b=S.book;Object.assign(b,{title:r.title||b.title,subtitle:r.subtitle||'',author:r.author||'',blurb:r.blurb||'',dedication:r.dedication||'',lang:r.lang||b.lang,tone:r.tone||'',pages:(r.pages||[]).map(p=>({h:p.h||'',t:p.t||''}))});
-  const p=r.palette||{};['primary','paper','ink','cover'].forEach(k=>p[k]&&/^#[0-9a-f]{3,8}$/i.test(p[k])&&(S.d[k]=p[k]));
-  S.logoIdea=r.logo_idea||'';b.logo=mkLogo('دائرة',(b.title||'ك').trim()[0]);S.sel=0;S.tab='pages';fitAll(1)}catch(e){toast(errMsg(e))}
- busy(0);refresh();save()}
+const SYS_O='أنت مؤلف ومحرر محترف. حوّل الحوار إلى خطة كتاب. أعد JSON صالحًا فقط: {"title":"","subtitle":"","author":"","blurb":"نبذة الغلاف الخلفي","dedication":"","lang":"","tone":"وصف دقيق للأسلوب","palette":{"primary":"#hex","paper":"#hex","ink":"#hex","cover":"#hex"},"logo_idea":"","chapters":[{"h":"عنوان الفصل","summary":"ماذا يحتوي بالتفصيل","pages":3}]}. التزم بكل طلبات المستخدم حرفيًا (عدد الفصول، الطول، اللغة، الأسلوب).';
+function applyBook(o,pages){snap();const b=S.book;Object.assign(b,{title:o.title||b.title,subtitle:o.subtitle||'',author:o.author||'',blurb:o.blurb||'',dedication:o.dedication||'',lang:o.lang||b.lang,tone:o.tone||'',pages});
+ const p=o.palette||{};['primary','paper','ink','cover'].forEach(k=>p[k]&&/^#[0-9a-f]{3,8}$/i.test(p[k])&&(S.d[k]=p[k]));
+ S.logoIdea=o.logo_idea||'';b.logo=mkLogo('دائرة',(b.title||'ك').trim()[0]);S.sel=0;S.tab='pages';fitAll(1)}
+async function gen(){if(!S.chat.some(m=>m.role=='user'))return toast('ابدأ الحوار أولًا');busy(1);let o=null,pages=[];
+ try{toast('جاري وضع خطة الكتاب…');
+  o=parseJ(await ai(SYS_O,[...S.chat,{role:'user',content:'ممتاز، ضع الآن خطة الكتاب بصيغة JSON فقط.'}],3000));
+  const chs=(o.chapters||[]).slice(0,30);if(!chs.length)throw new Error('لم تصل خطة صالحة، حاول مرة أخرى');
+  const talk=S.chat.map(m=>(m.role=='user'?'المؤلف: ':'المحرر: ')+m.content).join('\n');
+  for(let i=0;i<chs.length;i++){toast(`جاري كتابة الفصل ${i+1} من ${chs.length}…`);const c=chs[i],n=Math.min(Math.max(+c.pages||2,1),12);
+   const sys=`أنت مؤلف محترف تكتب الكتاب «${o.title}» ${o.subtitle||''} بلغة ${o.lang||'المؤلف'} وبأسلوب: ${o.tone||''}. اكتب الفصل رقم ${i+1} «${c.h}» كاملًا، محتواه: ${c.summary}. وزّعه على ${n} صفحات بالضبط، كل صفحة 90 إلى 110 كلمة من نص حقيقي غني بالأفكار والأمثلة والتفاصيل، بلا حشو ولا تكرار ولا إشارة إلى أنك ذكاء اصطناعي ولا إلى الحوار. أعد JSON فقط: {"pages":[{"t":"نص الصفحة، فقرات مفصولة بسطر فارغ"}]}.\nخطة الكتاب: ${chs.map((x,j)=>(j+1)+'. '+x.h+' — '+x.summary).join(' | ')}\nتفاصيل ما قاله المؤلف:\n${talk}`;
+   const r=parseJ(await ai(sys,[{role:'user',content:'اكتب الفصل الآن.'}],4500));
+   (r.pages||[]).forEach((p,k)=>pages.push({h:k?'':c.h,t:p.t||''}))}
+  toast('تم! الكتاب جاهز')}catch(e){toast(errMsg(e))}
+ if(o&&pages.length)applyBook(o,pages);busy(0);refresh();save()}
 $('#gen').onclick=gen;
 
 /* ---------- الصفحات ---------- */
@@ -289,7 +300,7 @@ function refresh(){$('#nav').innerHTML=TABS.map(([k,t])=>`<button data-t="${k}" 
  document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!='t-'+S.tab);({chat:drawChat,pages:drawPages,design:drawDesign,cover:drawCover,out:drawOut})[S.tab]()}
 $('#nav').onclick=e=>{const t=e.target.dataset.t;if(t){S.tab=t;refresh()}};
 $('#gear').onclick=()=>{$('#eurl').value=S.ep.url;$('#emodel').value=S.ep.model;$('#dlg').showModal()};
-$('#esave').onclick=()=>{S.ep={url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast(S.ep.url?'تم ربط الذكاء الاصطناعي':'وضع تجريبي')};
+$('#esave').onclick=()=>{S.ep={url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast(S.ep.url?'تم ربط الـ Worker':'سيُستخدم المفتاح الموجود في الكود')};
 refresh();
 </script>
 </body>
