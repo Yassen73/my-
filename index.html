@@ -3,46 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>كتابك — اصنع كتابك بالذكاء الاصطناعي</title>
+<title>كتابك — مصنع الكتب</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#14213d;--gold:#e9b949;--desk:#d9dde3;--ink:#151a26;--line:#c4cad4}
+:root{--navy:#0f3d4a;--navy2:#176074;--gold:#d99a1f;--desk:#f3eee4;--ink:#1f2630;--line:#e3dac8;--card:#fffdf9;--mut:#6b7280}
 *{box-sizing:border-box}
-body{margin:0;background:var(--desk);color:var(--ink);font:15px/1.6 Tajawal,sans-serif}
-header{background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px;position:sticky;top:0;z-index:5;flex-wrap:wrap}
-.brand{font:700 24px 'Reem Kufi',serif;color:var(--gold)}
-nav{display:flex;gap:4px;flex:1;overflow-x:auto}
-nav button{background:none;border:0;color:#cfd6e4;padding:8px 12px;font:inherit;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
-nav button.on{color:#fff;border-color:var(--gold)}
-header .tools button{background:#26365c;color:#fff;border:0;padding:6px 10px;border-radius:4px;cursor:pointer;font:inherit}
-#bar{display:none;height:3px;background:linear-gradient(90deg,var(--gold),transparent);animation:sl 1s infinite linear;background-size:200% 100%;position:sticky;top:52px;z-index:5}
+body{margin:0;background:var(--desk);color:var(--ink);font:16px/1.7 Tajawal,sans-serif}
+header{background:linear-gradient(135deg,#0b2f39,var(--navy2));color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;position:sticky;top:0;z-index:5;flex-wrap:wrap;box-shadow:0 2px 12px #0003}
+.brand{font:700 28px 'Reem Kufi',serif;color:#f1c15a}
+nav{display:flex;gap:6px;flex:1;overflow-x:auto;padding:2px}
+nav button{background:#ffffff14;border:0;color:#d6e4e8;padding:7px 15px;border-radius:999px;white-space:nowrap;font-weight:500}
+nav button.on{background:var(--gold);color:#1b1405;font-weight:700}
+header .tools button{background:#ffffff1f;color:#fff;border:0;padding:7px 13px;border-radius:999px}
+#bar{display:none;height:3px;background:linear-gradient(90deg,var(--gold),transparent);animation:sl 1s infinite linear;background-size:200% 100%;position:sticky;top:58px;z-index:5}
 .busy #bar{display:block}@keyframes sl{to{background-position:-200% 0}}
-main{max-width:1180px;margin:0 auto;padding:16px}
+main{max-width:1180px;margin:0 auto;padding:18px}
 section[hidden]{display:none}
 .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,470px);gap:18px;align-items:start}
 @media(max-width:900px){.cols{grid-template-columns:1fr}}
-.panel{background:#fff;border-radius:4px;padding:14px;border:1px solid var(--line)}
-button{font:inherit;cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);padding:7px 12px;border-radius:4px}
-button.pri,button.hot{background:var(--navy);color:#fff}
-button.wide{width:100%;margin-top:10px;padding:11px}
+.panel{background:var(--card);border-radius:16px;padding:18px;border:1px solid var(--line);box-shadow:0 3px 16px #3a2e140f}
+button{font:inherit;cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);padding:8px 13px;border-radius:10px;transition:.15s}
+button:hover{background:#eef5f6}
+button.pri,button.hot{background:var(--navy);color:#fff}button.pri:hover{background:var(--navy2)}
+button.hot{background:var(--gold);color:#1b1405;border-color:var(--gold);font-weight:700}
+button.wide{width:100%;margin-top:10px;padding:12px}
 button:disabled{opacity:.5}
-input,select,textarea{font:inherit;width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
-input[type=color]{padding:2px;height:36px}input[type=checkbox]{width:auto}
-label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px}
-.row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.row>*{flex:1}
-#chatbox{height:52vh;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
-.m{max-width:85%;padding:9px 13px;border-radius:12px;white-space:normal}
-.m.a{background:#eef1f6;align-self:flex-start}.m.u{background:var(--navy);color:#fff;align-self:flex-end}
+input,select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #d99a1f66;border-color:var(--gold)}
+input[type=color]{padding:2px;height:38px}input[type=checkbox]{width:auto}
+label{display:block;font-size:13.5px;font-weight:700;margin:11px 0 4px;color:#33414f}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+.row{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}.row>*{flex:1}
+.meter{margin-bottom:12px;font-size:13px;color:var(--mut)}.meter i{display:block;height:6px;border-radius:9px;background:#eadfca;margin-top:5px;overflow:hidden}.meter b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#e8c25a);transition:width .4s}
+#chatbox{height:56vh;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:6px}
+.m{max-width:88%;padding:11px 15px;border-radius:16px;line-height:1.9}
+.m.a{background:#f4eee0;border:1px solid var(--line);align-self:flex-start;border-top-right-radius:4px}.m.u{background:var(--navy);color:#fff;align-self:flex-end;border-top-left-radius:4px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.fg .chk{display:flex;gap:8px;align-items:center;margin-top:14px}.fg .chk label{margin:0}
-.stage{background:#b9c0cb;padding:16px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;border-radius:4px}
-.stage>div{box-shadow:0 2px 10px #0004}
-#grid{display:flex;flex-wrap:wrap;gap:10px;background:#b9c0cb;padding:12px;border-radius:4px}
-.th{box-shadow:0 1px 5px #0004;cursor:pointer;outline:3px solid transparent}.th.on{outline-color:var(--gold)}
-.nv{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.stage{background:#e7dfcf;padding:16px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;border-radius:12px}
+.stage>div{box-shadow:0 4px 16px #0004}
+#grid{display:flex;flex-wrap:wrap;gap:10px;background:#e7dfcf;padding:14px;border-radius:14px}
+.th{box-shadow:0 2px 8px #0004;cursor:pointer;outline:3px solid transparent}.th.on{outline-color:var(--gold)}
+.nv{display:flex;justify-content:space-between;align-items:center;margin:10px 0}
 #warn{color:#a4161a;font-weight:700}
-.ck{list-style:none;padding:0;margin:0}.ck li{padding:6px 0;border-bottom:1px solid #eceff3}.ck li::before{content:"✓ ";color:#18794e;font-weight:700}.ck li.no::before{content:"✗ ";color:#a4161a}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;display:none;z-index:20;max-width:90vw}
-dialog{border:0;border-radius:6px;max-width:560px;width:92vw;padding:18px}
+.ck{list-style:none;padding:0;margin:0}.ck li{padding:7px 0;border-bottom:1px solid #eee6d6}.ck li::before{content:"✓ ";color:#18794e;font-weight:700}.ck li.no::before{content:"✗ ";color:#a4161a}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:12px;display:none;z-index:60;max-width:90vw}
+#ov{position:fixed;inset:0;background:#0b2f39ec;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}#ov[hidden]{display:none}
+.ovc{background:var(--card);border-radius:18px;padding:28px;max-width:430px;width:100%;text-align:center}.ovc h3{margin:6px 0}.ovc p{color:var(--mut);margin:4px 0 14px}
+.pgb{height:8px;border-radius:9px;background:#eadfca;overflow:hidden}.pgb b{display:block;height:100%;width:0;background:var(--gold);transition:width .5s}
+.spin{width:40px;height:40px;border:4px solid #eadfca;border-top-color:var(--navy);border-radius:50%;margin:0 auto 12px;animation:rt 1s linear infinite}@keyframes rt{to{transform:rotate(360deg)}}
 pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;font-size:12px}
 .logo svg,.logo img{width:100%;height:100%;object-fit:contain}
 #printRoot{display:none}#meas{display:block;position:absolute;left:-99999px;top:0;visibility:hidden}
@@ -50,10 +58,12 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 <style id="sc">
 .sheet{width:var(--w);height:var(--h);position:relative;overflow:hidden;background:var(--pp);color:var(--ik);font:var(--fs)/var(--lh) var(--ff);text-align:var(--al);flex:none;box-sizing:border-box}
 .sheet .in{height:100%;overflow:hidden}.sheet .in>.c{min-height:100%}
-.sheet p{margin:0 0 .65em}
+.sheet p{margin:0;text-indent:1.3em}.sheet .c>p:first-child,.chh+p,.tp p,.cr p,.dd p{text-indent:0}.cr p,.tp p{margin:0 0 .5em}
 .sheet h2{color:var(--pc);font-size:1.7em;line-height:1.4;margin:0 0 .7em;text-align:start}
 .hs-rule h2{padding-bottom:.25em;border-bottom:.4mm solid var(--pc)}
 .hs-orn h2{text-align:center}.hs-orn h2::after{content:"✦";display:block;font-size:.5em;margin-top:.3em}
+.chh{margin:14mm 0 9mm;text-align:center}.cn{display:block;color:var(--pc);font-size:.85em;letter-spacing:.06em;margin-bottom:.3em}.chh h2{text-align:center;margin:0}.chh::after{content:"❖";display:block;color:var(--pc);margin-top:.5em;font-size:.8em}.hs-rule .chh::after,.hs-orn .chh h2::after{content:none}
+.bs{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;min-height:100%;text-align:center;color:var(--pc);font-size:2em;line-height:2}.bs::before,.bs::after{content:"❁";font-size:.55em;opacity:.7}
 .pn{position:absolute;bottom:8mm;left:0;right:0;text-align:center;font-size:.8em;opacity:.7}
 .tp,.dd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;text-align:center}
 .tp .logo{width:26mm;height:26mm;margin-bottom:10mm}.tp h1{color:var(--pc);font-size:2.4em;line-height:1.3;margin:0 0 .4em}.tp .au{margin-top:12mm;font-weight:700}
@@ -74,13 +84,14 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 </style>
 </head>
 <body>
-<header><span class="brand">كتابك</span><nav id="nav"></nav><span class="tools"><button id="undo">↶ تراجع</button> <button id="gear">⚙ الذكاء الاصطناعي</button></span></header>
+<header><span class="brand">كتابك</span><nav id="nav"></nav><span class="tools"><button id="undo">↶ تراجع</button></span></header>
 <div id="bar"></div>
 <main>
 <section id="t-chat"><div class="panel">
+ <div class="meter"><span id="mt"></span><i><b id="mf"></b></i></div>
  <div id="chatbox"></div>
  <div class="row"><textarea id="msg" rows="2" placeholder="اكتب أو اضغط الميكروفون وتكلم…" style="flex:6"></textarea><button id="mic" style="flex:1">🎙</button><button id="sendb" class="pri" style="flex:1.4">أرسل</button></div>
- <button id="gen" class="wide">ولّد الكتاب من الحوار</button>
+ <button id="gen" class="wide">✨ اكتب لي الكتاب</button>
  <button id="newc" class="wide">حوار جديد</button>
 </div></section>
 
@@ -91,8 +102,9 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
   <div id="warn"></div>
   <label>عنوان الصفحة / الفصل</label><input id="eh">
   <label>نص الصفحة</label><textarea id="et" rows="7"></textarea>
+  <label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="em"> مقدمة / خاتمة / فصل خاص (بدون «الفصل رقم»)</label>
   <div class="row"><button id="addp">＋ صفحة بعدها</button><button id="delp">حذف</button><button id="upp">↑</button><button id="dnp">↓</button></div>
-  <label>كلّم الذكاء الاصطناعي عن هذه الصفحة</label>
+  <label>كلّم المحرر عن هذه الصفحة</label>
   <textarea id="pm" rows="2" placeholder="مثلًا: اجعل الفقرة الأولى أقصر وأضف مثالًا من الحياة اليومية"></textarea>
   <div class="row"><select id="scope"><option value="p">هذه الصفحة فقط</option><option value="all">كل الكتاب</option></select><button id="goai" class="pri">نفّذ</button></div>
   <button id="fit" class="wide">ضبط الصفحات تلقائيًا ليتسع النص</button>
@@ -111,7 +123,7 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
   <b>الشعار</b>
   <label>وصف الشعار الذي تريده</label><input id="ldesc" placeholder="مثلًا: نخلة بسيطة داخل دائرة بألوان دافئة">
   <div class="fg"><div><label>شكل الشعار السريع</label><select id="lstyle"><option>دائرة</option><option>درع</option><option>معيّن</option><option>كتاب</option></select></div><div><label>لون الشعار</label><input type="color" id="lcol"></div></div>
-  <div class="row"><button id="lai" class="pri">شعار بالذكاء الاصطناعي</button><button id="lloc">شعار سريع</button></div>
+  <div class="row"><button id="lai" class="pri">🎨 صمّم لي شعارًا</button><button id="lloc">شعار سريع</button></div>
   <div class="row"><label style="flex:1;cursor:pointer;border:1px solid var(--navy);padding:7px;text-align:center;border-radius:4px">ارفع شعارك<input type="file" id="lup" accept="image/*" hidden></label><button id="lrm">إزالة الشعار</button></div>
  </div>
  <div class="panel"><div id="cprev" class="stage"></div></div>
@@ -130,130 +142,132 @@ pre{direction:ltr;text-align:left;background:#f1f3f6;padding:10px;overflow:auto;
 </div></section>
 </main>
 
-<dialog id="dlg">
- <b>ربط الذكاء الاصطناعي</b>
- <p style="font-size:13px">المفتاح المجاني من console.groq.com/keys (يبدأ بـ gsk_). للنشر الحقيقي اربط هنا Worker حتى لا يظهر مفتاحك لأي زائر.</p>
- <label>مفتاح الذكاء الاصطناعي (يُحفظ في متصفحك فقط)</label><input id="ekey" dir="ltr" placeholder="gsk_...">
- <label>أو رابط الخادم الوسيط</label><input id="eurl" dir="ltr" placeholder="https://xxxx.workers.dev">
- <label>اسم النموذج (اختياري)</label><input id="emodel" dir="ltr" placeholder="اتركه فارغًا لاستخدام نموذج الكود">
- <details><summary>كود الـ Worker (ضع المفتاح في ANTHROPIC_API_KEY)</summary><pre>export default{async fetch(r,env){
-const h={'access-control-allow-origin':'*','access-control-allow-headers':'content-type'};
-if(r.method=='OPTIONS')return new Response(null,{headers:h});
-const b=await r.json();
-const x=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({...b,model:b.model||'claude-sonnet-5-5'})});
-return new Response(await x.text(),{status:x.status,headers:{...h,'content-type':'application/json'}})}}</pre></details>
- <div class="row"><button id="esave" class="pri">حفظ</button><button onclick="$('#dlg').close()">إغلاق</button></div>
-</dialog>
-<div id="toast"></div><div id="meas"></div><div id="printRoot"></div>
+
+<div id="toast"></div><div id="ov" hidden><div class="ovc"><div class="spin"></div><h3 id="ovt"></h3><p id="ovs"></p><div class="pgb"><b id="ovb"></b></div><p style="font-size:12px;margin-top:12px">لا تغلق الصفحة أثناء الكتابة</p></div></div><div id="meas"></div><div id="printRoot"></div>
 
 <script>
-/* ضع مفتاحك هنا أو من زر ⚙ داخل الموقع. المفتاح المجاني: console.groq.com/keys (يبدأ بـ gsk_) */
-const CONFIG={provider:'groq',apiKey:''};
+const CONFIG={apiKey:'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'};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SIZES={'A5':[148,210],'A4':[210,297],'B5':[176,250],'14×21':[140,210],'17×24':[170,240],'جيب 11×18':[110,180]};
 const FONTS=['Amiri','Noto Naskh Arabic','Cairo','Tajawal','Reem Kufi','Georgia'];
 const FONTURL=document.querySelector('link[href*=fonts]').href;
-const DEF={size:'A5',font:'Amiri',fs:13,lh:1.9,align:'justify',dir:'rtl',hs:'rule',primary:'#1f4fd8',paper:'#ffffff',ink:'#1a1a1a',cover:'#14213d',coverInk:'#ffffff',logo:'#e9b949',inner:22,outer:15,top:18,bottom:20,pnum:1,toc:1,copyright:1,dedication:1,blank4:1,bleed:3,gsm:80};
-const EB={title:'عنوان الكتاب',subtitle:'',author:'',blurb:'',dedication:'',lang:'العربية',tone:'',logo:'',pages:[]};
+const DEF={size:'A5',font:'Amiri',fs:13,lh:1.9,align:'justify',dir:'rtl',hs:'rule',primary:'#0f4c5c',paper:'#ffffff',ink:'#1a1a1a',cover:'#0f3d4a',coverInk:'#ffffff',logo:'#e0a526',inner:22,outer:15,top:18,bottom:20,pnum:1,basmala:1,chnum:1,toc:1,copyright:1,dedication:1,blank4:1,bleed:3,gsm:80};
+const EB={title:'عنوان الكتاب',subtitle:'',author:'',blurb:'',dedication:'',lang:'العربية',tone:'',logo:'',publisher:'',edition:'الطبعة الأولى',isbn:'',epigraph:'',about:'',pages:[]};
 let S={tab:'chat',chat:[],ready:false,book:{...EB},sel:0,ep:{url:'',model:''},d:{...DEF},logoIdea:''},hist=[];
-const GREET='أهلًا! أنا محررك. احكِ لي بحرية: عن ماذا تريد أن يكون كتابك؟ سأسألك عن كل التفاصيل، وتقدر تغيّر أي شيء بعدها.';
-const SYS_I='أنت محرر كتب ذكي ودود داخل موقع «كتابك». مهمتك حوار لجمع كل تفاصيل الكتاب: الفكرة، القارئ، الأسلوب ونبرة الكلام، لغة الكتاب، الطول وعدد الفصول، العنوان، اسم المؤلف، الألوان والشكل العام، كلمات أو أفكار يجب أن تظهر أو تُتجنب، وأي طلب خاص. اسأل سؤالًا واحدًا قصيرًا في كل رد، وتفاعل مع إجابة المستخدم واقترح بدائل إن تردد. اكتب بلغة المستخدم. عند اكتمال التفاصيل لخّص ما فهمته في نقاط واسأل إن أراد إضافة شيء، فإن أكّد فأضف في آخر ردك العلامة [[READY]].';
-const SYS_G='أنت مؤلف ومحرر محترف. حوّل الحوار إلى كتاب كامل. أعد JSON صالحًا فقط بلا أي نص خارجه ولا علامات code بهذا الشكل: {"title":"","subtitle":"","author":"","blurb":"نبذة الغلاف الخلفي","dedication":"","lang":"","tone":"","palette":{"primary":"#hex","paper":"#hex","ink":"#hex","cover":"#hex"},"logo_idea":"وصف الشعار","pages":[{"h":"عنوان الفصل أو فارغ إن كانت الصفحة امتدادًا","t":"نص الصفحة، فقرات مفصولة بسطر فارغ"}]}. كل صفحة لا تزيد عن 110 كلمة. اكتب محتوى حقيقيًا كاملًا وعميقًا بأسلوب المستخدم ولغته، بلا عناوين وهمية، والتزم بكل طلباته حرفيًا.';
-const Q=['','لمن تكتب هذا الكتاب؟ من هو القارئ؟','ما الأسلوب الذي تريده؟ (رسمي، دافئ، ساخر، مبسّط…)','كم فصلًا تقريبًا، وما طول الكتاب؟','ما اسمك كمؤلف؟','هل هناك أفكار أو كلمات يجب أن تظهر؟'];
+const GREET='أهلًا بيك! 👋 أنا محررك الشخصي، وهنعمل كتابك سوا من أول فكرة لحد ما يبقى جاهز للطباعة. مش مستعجل خالص؛ هسألك أسئلة كتير عشان الكتاب يطلع بصوتك أنت مش بصوت حد تاني. احكيلي بحرية: إيه الفكرة اللي في دماغك؟ حتى لو لسه مش واضحة، ابدأ من أي طرف.';
+const SYS_I=`أنت «محرر كتابك»: محرر ومؤلف مشارك دافئ، فضولي، صريح، وعلى قدر عالٍ من الثقافة. تتكلم مع المستخدم كصديق محترف يحب الكتب، وبنفس لغته ولهجته (إن كتب بالمصرية فرد بعربية قريبة منها وواضحة، وإن كتب بالفصحى أو بالإنجليزية فبها).
+أسلوبك:
+- ردودك غنية ومفصّلة: تعلّق على كلام المستخدم بصدق وعمق في فقرة أو اثنتين، تلتقط الفكرة الجميلة فيه وتسميها، وتقترح 2 أو 3 زوايا أو أفكار محددة يمكن أن تثري الكتاب (عناوين، مشاهد، أمثلة، بنية، نبرة)، ثم تختم بسؤال واحد واضح فقط. لا تكتفِ أبدًا بجملة أو جملتين.
+- تقبل أي فكرة عادية بحماس، وتقبل أيضًا الموضوعات الجريئة: رومانسية وعلاقات، صراع وعنف درامي، سياسة ودين وتاريخ حساس، قضايا اجتماعية، أدب مظلم وشخصيات رمادية، سخرية لاذعة. تتعامل معها بنضج وفن دون وعظ ولا استنكار ولا تحذيرات في غير موضعها، ولا تقل «لا أستطيع» لشيء عادي. لا ترفض إلا ما هو إجرامي صريح (جنس مع قاصرين، أو تعليمات عملية لإيذاء حقيقي)، وحينها ترفض بلطف في سطر وتقترح بديلًا قريبًا من هدفه.
+- لا تتعجل. تجمع على مهل تفاصيل كثيرة: الفكرة الأساسية، القارئ المستهدف، الهدف من الكتاب، نوعه (رواية، تطوير ذات، دليل، سيرة، شعر…)، النبرة والأسلوب، اللغة، الطول وعدد الفصول، العنوان المبدئي، اسم المؤلف، إن كان يريد مقدمة وإهداء واقتباسًا وبسملة، الألوان والشعور البصري للغلاف، الأفكار والقصص التي لا بد أن تظهر، وما يجب تجنبه.
+- لا تقترح بدء الكتابة ولا تضع العلامة [[READY]] إلا بعد أن تغطي معظم ما سبق فعلًا. عندها لخّص كل ما فهمته في نقاط مرتبة واسأل إن كان يريد تعديل أي شيء، فإن أكّد بوضوح فضع العلامة [[READY]] في آخر ردك.
+- لا تذكر أنك ذكاء اصطناعي ولا تتحدث عن نماذج أو مفاتيح.`;
 const pg=()=>S.book.pages[S.sel],has=()=>S.book.pages.length>0,rtl=()=>S.d.dir=='rtl';
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)}
 const busy=x=>document.body.classList.toggle('busy',!!x);
-const errMsg=e=>/API key/i.test(e.message)?'المفتاح غير صحيح أو غير مدعوم: انسخه كاملًا وبدون مسافات':e.message=='NOAI'?'ضع مفتاح الذكاء الاصطناعي في CONFIG.apiKey أعلى الكود (أو اربط Worker من ⚙)':(e.message||'حدث خطأ');
+const errMsg=e=>/API key|invalid_api_key/i.test(e.message)?'مفتاح الخدمة غير صحيح':(e.message||'حدث خطأ');
 function save(){try{localStorage.kt1=JSON.stringify({book:S.book,d:S.d,chat:S.chat,ep:S.ep,ready:S.ready,logoIdea:S.logoIdea})}catch(e){}}
 try{const j=JSON.parse(localStorage.kt1||'null');if(j){S.book={...EB,...j.book};S.d={...DEF,...j.d};S.chat=j.chat||[];S.ep=j.ep||S.ep;S.ready=j.ready;S.logoIdea=j.logoIdea||''}}catch(e){}
 function snap(){const s=JSON.stringify({b:S.book,d:S.d});if(hist[hist.length-1]!==s)hist.push(s);if(hist.length>40)hist.shift()}
 $('#undo').onclick=()=>{const s=hist.pop();if(!s)return toast('لا شيء للتراجع عنه');const o=JSON.parse(s);S.book=o.b;S.d=o.d;S.sel=Math.min(S.sel,Math.max(0,S.book.pages.length-1));refresh();save()};
 
-const MODELS={groq:['openai/gpt-oss-120b','llama-3.3-70b-versatile'],gemini:['gemini-2.5-pro','gemini-2.5-flash'],anthropic:['claude-sonnet-5-5']};
-async function ai(system,messages,max=4000){
- const e=S.ep,C=CONFIG,key=(e.key||C.apiKey||'').trim();if(!e.url&&!key)throw new Error('NOAI');
- const pv=/^gsk_/.test(key)?'groq':/^sk-ant/.test(key)?'anthropic':/^(AIza|AQ\.)/.test(key)?'gemini':C.provider;
- const ms=e.model?[e.model]:MODELS[pv]||MODELS.groq;let last;
- for(const m of ms){for(let t=0;t<4;t++){let r;
-  if(e.url)r=await fetch(e.url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:e.model||undefined,max_tokens:max,system,messages})});
-  else if(pv=='gemini')r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:messages.map(x=>({role:x.role=='assistant'?'model':'user',parts:[{text:x.content}]})),generationConfig:{maxOutputTokens:max+8000}})});
-  else if(pv=='groq')r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify({model:m,max_tokens:max+(/gpt-oss/.test(m)?4000:0),messages:[{role:'system',content:system},...messages]})});
-  else r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:m,max_tokens:max,system,messages})});
-  if(r.status==429&&t<3){toast('الخدمة المجانية مزدحمة، انتظر قليلًا…');await new Promise(z=>setTimeout(z,(parseFloat(r.headers.get('retry-after'))||20)*1000));continue}
+const MODELS=['openai/gpt-oss-120b','llama-3.3-70b-versatile'];
+async function ai(system,messages,max=4000,json=0){
+ const key=(CONFIG.apiKey||'').trim();let last;
+ for(const m of MODELS){for(let t=0;t<4;t++){
+  const body={model:m,max_tokens:max+(/gpt-oss/.test(m)?4000:0),temperature:json?.7:.9,messages:[{role:'system',content:system},...messages]};
+  if(json)body.response_format={type:'json_object'};
+  let r;try{r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify(body)})}catch(x){last=new Error('تعذّر الاتصال بالإنترنت');break}
+  if(r.status==429&&t<3){toast('المحرر مشغول لحظات، سأكمل تلقائيًا…');await new Promise(z=>setTimeout(z,Math.min(60,parseFloat(r.headers.get('retry-after'))||20)*1000));continue}
   const j=await r.json().catch(()=>({}));
-  if(!r.ok||j.error){last=new Error(j.error?.message||j.error||('خطأ '+r.status));break}
-  const txt=j.choices?(j.choices[0]?.message?.content||''):j.candidates?(j.candidates[0]?.content?.parts||[]).map(x=>x.text||'').join(''):j.content?j.content.map(x=>x.text||'').join(''):(j.text||'');
-  if(!txt){last=new Error('رد فارغ من النموذج');break}
+  if(!r.ok||j.error){last=new Error(j.error?.message||('خطأ '+r.status));break}
+  const txt=j.choices?.[0]?.message?.content||'';if(!txt){last=new Error('رد فارغ، حاول مرة أخرى');break}
   return txt}}
  throw last}
 const parseJ=s=>JSON.parse(s.slice(s.indexOf('{'),s.lastIndexOf('}')+1));
+async function aiJ(s,m,max){let e;for(let i=0;i<3;i++){try{return parseJ(await ai(s,m,max,1))}catch(x){if(!(x instanceof SyntaxError))throw x;e=x}}throw new Error('تعذّر فهم رد المحرر، حاول مرة أخرى')}
+function ov(on,t,s,f){$('#ov').hidden=!on;if(on){$('#ovt').textContent=t||'';$('#ovs').textContent=s||'';$('#ovb').style.width=((f||0)*100)+'%'}}
 
 /* ---------- الحوار ---------- */
-function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;$('#gen').classList.toggle('hot',S.ready||S.chat.length>=6)}
+const NEED=7,uc=()=>S.chat.filter(m=>m.role=='user').length;
+function drawChat(){const g=[{role:'assistant',content:GREET},...S.chat];$('#chatbox').innerHTML=g.map(m=>`<div class="m ${m.role=='user'?'u':'a'}">${esc(m.content).replace(/\n/g,'<br>')}</div>`).join('');$('#chatbox').scrollTop=1e6;
+ const c=Math.min(uc(),NEED);$('#mt').textContent=c<NEED?`اكتمال التفاصيل: ${c} من ${NEED} — كمّل الحوار ليخرج الكتاب أدق`:'✓ التفاصيل كافية، تقدر تبدأ الكتابة الآن';$('#mf').style.width=(c/NEED*100)+'%';$('#gen').classList.toggle('hot',c>=NEED)}
 async function send(){const v=$('#msg').value.trim();if(!v)return;$('#msg').value='';S.chat.push({role:'user',content:v});drawChat();busy(1);
- try{let r=await ai(SYS_I,S.chat,1500);
-  if(r.includes('[[READY]]')){S.ready=true;r=r.replace('[[READY]]','').trim()}S.chat.push({role:'assistant',content:r})}catch(e){S.chat.pop();$('#msg').value=v;toast(errMsg(e))}
+ try{let r=await ai(SYS_I+(uc()<NEED?'\n\n(ملاحظة داخلية: ما زالت تنقصنا تفاصيل كثيرة، لا تضع [[READY]] ولا تقترح البدء بالكتابة الآن.)':''),S.chat.slice(-40),2500);
+  if(r.includes('[[READY]]')){r=r.replace('[[READY]]','').trim();if(uc()>=NEED)S.ready=true}S.chat.push({role:'assistant',content:r})}catch(e){S.chat.pop();$('#msg').value=v;toast(errMsg(e))}
  busy(0);drawChat();save()}
 $('#sendb').onclick=send;$('#msg').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey){e.preventDefault();send()}};
 $('#mic').onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return toast('المتصفح لا يدعم الإملاء الصوتي');const r=new R();r.lang=rtl()?'ar-EG':'en-US';r.onresult=e=>{$('#msg').value+=' '+e.results[0][0].transcript};r.start();toast('تكلّم الآن…')};
-const SYS_O='أنت مؤلف ومحرر محترف. حوّل الحوار إلى خطة كتاب. أعد JSON صالحًا فقط: {"title":"","subtitle":"","author":"","blurb":"نبذة الغلاف الخلفي","dedication":"","lang":"","tone":"وصف دقيق للأسلوب","palette":{"primary":"#hex","paper":"#hex","ink":"#hex","cover":"#hex"},"logo_idea":"","chapters":[{"h":"عنوان الفصل","summary":"ماذا يحتوي بالتفصيل","pages":3}]}. التزم بكل طلبات المستخدم حرفيًا (عدد الفصول، الطول، اللغة، الأسلوب).';
-function applyBook(o,pages){snap();const b=S.book;Object.assign(b,{title:o.title||b.title,subtitle:o.subtitle||'',author:o.author||'',blurb:o.blurb||'',dedication:o.dedication||'',lang:o.lang||b.lang,tone:o.tone||'',pages});
+const SYS_O='أنت مؤلف ومحرر محترف. حوّل الحوار إلى خطة كتاب حقيقي. أعد JSON صالحًا فقط: {"title":"","subtitle":"","author":"","blurb":"نبذة الغلاف الخلفي جذابة","dedication":"","epigraph":"اقتباس افتتاحي أو فارغ","about":"نبذة قصيرة عن المؤلف أو فارغ","basmala":true,"lang":"","tone":"وصف دقيق للأسلوب","palette":{"primary":"#hex","paper":"#hex","ink":"#hex","cover":"#hex"},"logo_idea":"","chapters":[{"h":"عنوان الفصل","summary":"ماذا يحتوي بالتفصيل","pages":4,"kind":"c"}]}. اجعل أول عنصر مقدمة وآخر عنصر خاتمة وأعطِهما kind:"m" (وبقية الفصول kind:"c") ما لم يطلب المؤلف غير ذلك. إن لم يحدد المؤلف عدد الفصول فاجعلها من 8 إلى 12 فصلًا بين 3 و7 صفحات لكل فصل. اجعل basmala:true فقط إن كان الكتاب عربيًا ومناسبًا لافتتاحه بالبسملة. اختر ألوانًا متناسقة تناسب موضوع الكتاب ونصه مقروء على الورق. التزم بكل طلبات المستخدم حرفيًا، حتى الجريئة منها.';
+function applyBook(o,pages){snap();const b=S.book;Object.assign(b,{title:o.title||b.title,subtitle:o.subtitle||'',author:o.author||'',blurb:o.blurb||'',dedication:o.dedication||'',epigraph:o.epigraph||'',about:o.about||'',lang:o.lang||b.lang,tone:o.tone||'',pages});
  const p=o.palette||{};['primary','paper','ink','cover'].forEach(k=>p[k]&&/^#[0-9a-f]{3,8}$/i.test(p[k])&&(S.d[k]=p[k]));
+ if(typeof o.basmala=='boolean')S.d.basmala=+o.basmala;
  S.logoIdea=o.logo_idea||'';b.logo=mkLogo('دائرة',(b.title||'ك').trim()[0]);S.sel=0;S.tab='pages';fitAll(1)}
-async function gen(){if(!S.chat.some(m=>m.role=='user'))return toast('ابدأ الحوار أولًا');busy(1);let o=null,pages=[];
- try{toast('جاري وضع خطة الكتاب…');
-  o=parseJ(await ai(SYS_O,[...S.chat,{role:'user',content:'ممتاز، ضع الآن خطة الكتاب بصيغة JSON فقط.'}],3000));
+async function gen(){if(uc()<NEED)return toast(`لسه محتاجين تفاصيل أكتر عشان الكتاب يطلع قويّ — كمّل الحوار (${uc()} من ${NEED})`);
+ busy(1);ov(1,'جاري وضع خطة الكتاب…','',.02);let o=null,pages=[];
+ try{o=await aiJ(SYS_O,[...S.chat.slice(-40),{role:'user',content:'ممتاز، ضع الآن خطة الكتاب بصيغة JSON فقط.'}],4000);
   const chs=(o.chapters||[]).slice(0,30);if(!chs.length)throw new Error('لم تصل خطة صالحة، حاول مرة أخرى');
-  const talk=S.chat.map(m=>(m.role=='user'?'المؤلف: ':'المحرر: ')+m.content).join('\n');
-  for(let i=0;i<chs.length;i++){toast(`جاري كتابة الفصل ${i+1} من ${chs.length}…`);const c=chs[i],n=Math.min(Math.max(+c.pages||2,1),12);
-   const sys=`أنت مؤلف محترف تكتب الكتاب «${o.title}» ${o.subtitle||''} بلغة ${o.lang||'المؤلف'} وبأسلوب: ${o.tone||''}. اكتب الفصل رقم ${i+1} «${c.h}» كاملًا، محتواه: ${c.summary}. وزّعه على ${n} صفحات بالضبط، كل صفحة 90 إلى 110 كلمة من نص حقيقي غني بالأفكار والأمثلة والتفاصيل، بلا حشو ولا تكرار ولا إشارة إلى أنك ذكاء اصطناعي ولا إلى الحوار. أعد JSON فقط: {"pages":[{"t":"نص الصفحة، فقرات مفصولة بسطر فارغ"}]}.\nخطة الكتاب: ${chs.map((x,j)=>(j+1)+'. '+x.h+' — '+x.summary).join(' | ')}\nتفاصيل ما قاله المؤلف:\n${talk}`;
-   const r=parseJ(await ai(sys,[{role:'user',content:'اكتب الفصل الآن.'}],4500));
-   (r.pages||[]).forEach((p,k)=>pages.push({h:k?'':c.h,t:p.t||''}))}
-  toast('تم! الكتاب جاهز')}catch(e){toast(errMsg(e))}
- if(o&&pages.length)applyBook(o,pages);busy(0);refresh();save()}
+  const talk=S.chat.map(m=>(m.role=='user'?'المؤلف: ':'المحرر: ')+m.content).join('\n'),plan=chs.map((x,j)=>(j+1)+'. '+x.h+' — '+x.summary).join(' | ');let prev='';
+  for(let i=0;i<chs.length;i++){const c=chs[i],n=Math.min(Math.max(+c.pages||3,1),12),sp=c.kind=='m',num=chs.slice(0,i+1).filter(x=>x.kind!='m').length;
+   ov(1,'جاري كتابة: '+c.h,`الجزء ${i+1} من ${chs.length}`,(i+.3)/chs.length);
+   const sys=`أنت مؤلف محترف تكتب كتاب «${o.title}» ${o.subtitle||''} بلغة ${o.lang||'المؤلف'} وبأسلوب: ${o.tone||''}. اكتب ${sp?'':'الفصل رقم '+num+' '}«${c.h}» كاملًا، محتواه: ${c.summary}. وزّعه على ${n} صفحات بالضبط، كل صفحة 100 إلى 125 كلمة. اكتب كما تُكتب الكتب المطبوعة: فقرات متصلة متدفقة، افتتاحية قوية في أول صفحة، وأمثلة وقصص ومشاهد وحوارات وتفاصيل حسية حين يناسب، وختام يمهّد لما بعده. التزم بكل ما طلبه المؤلف حتى لو كان الموضوع جريئًا أو حساسًا، وعالجه بنضج وصدق دون وعظ ولا اعتذار. بلا حشو ولا تكرار لما سبق، ولا إشارة إلى أنك ذكاء اصطناعي أو إلى الحوار، ولا عناوين فرعية داخل النص. أعد JSON فقط: {"pages":[{"t":"نص الصفحة، فقرات مفصولة بسطر فارغ"}]}.\nخطة الكتاب: ${plan}\n${prev?'آخر ما كُتب قبل هذا الفصل (تابع دون تكرار):\n'+prev.slice(-500)+'\n':''}تفاصيل ما قاله المؤلف:\n${talk}`;
+   const r=await aiJ(sys,[{role:'user',content:'اكتب الآن.'}],5000);
+   (r.pages||[]).forEach((p,k)=>pages.push({h:k?'':c.h,t:p.t||'',m:!k&&sp}));
+   prev=(pages[pages.length-1]||{}).t||''}
+  toast('تم! الكتاب جاهز ✨')}catch(e){toast(errMsg(e))}
+ ov(0);if(o&&pages.length)applyBook(o,pages);busy(0);refresh();save()}
 $('#gen').onclick=gen;$('#newc').onclick=()=>{S.chat=[];S.ready=false;save();drawChat()};
 
 /* ---------- الصفحات ---------- */
 const paras=t=>String(t||'').split(/\n+/).filter(Boolean).map(s=>`<p>${esc(s)}</p>`).join('');
 function css(){const d=S.d,[w,h]=SIZES[d.size]||SIZES.A5;return `--w:${w}mm;--h:${h}mm;--b:${d.bleed}mm;--fs:${d.fs}pt;--lh:${d.lh};--pc:${d.primary};--pp:${d.paper};--ik:${d.ink};--ff:'${d.font}',serif;--al:${d.align}`}
-function inside(){const b=S.book,d=S.d,L=[{k:'t'}];if(d.copyright)L.push({k:'cr'});if(d.dedication&&b.dedication)L.push({k:'dd'});if(d.toc&&b.pages.some(p=>p.h))L.push({k:'toc'});b.pages.forEach((p,i)=>L.push({k:'c',p,i}));if(d.blank4)while(L.length%4)L.push({k:'bl'});return L}
+function inside(){const b=S.book,d=S.d,L=[];if(d.basmala&&rtl())L.push({k:'bs'});L.push({k:'t'});if(d.copyright)L.push({k:'cr'});if(d.dedication&&b.dedication)L.push({k:'dd'});if(b.epigraph)L.push({k:'ep'});
+ const T=b.pages.filter(p=>p.h);if(d.toc&&T.length)for(let j=0;j<Math.ceil(T.length/16);j++)L.push({k:'toc',j});
+ let c=0;b.pages.forEach((p,i)=>{const x={k:'c',p,i};if(p.h&&!p.m)x.cn=++c;L.push(x)});if(b.about)L.push({k:'ab'});if(d.blank4)while(L.length%4)L.push({k:'bl'});return L}
+const ORD=['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر'];
 function sheet(x,n,L){const d=S.d,b=S.book,odd=n%2==1,sr=rtl()?odd:!odd,l=sr?d.outer:d.inner,r=sr?d.inner:d.outer;let h='',pn='';
- if(x.k=='c'){h=(x.p.h?`<h2>${esc(x.p.h)}</h2>`:'')+paras(x.p.t);if(d.pnum)pn=`<div class="pn">${n}</div>`}
- else if(x.k=='t')h=`<div class="tp"><div class="logo">${b.logo||''}</div><h1>${esc(b.title)}</h1><p>${esc(b.subtitle)}</p><p class="au">${esc(b.author)}</p></div>`;
- else if(x.k=='cr')h=`<div class="cr"><p>© ${new Date().getFullYear()} ${esc(b.author)}</p><p>${rtl()?'جميع الحقوق محفوظة.':'All rights reserved.'}</p></div>`;
+ if(x.k=='c'){const cn=x.cn??(L.find(y=>y.p===x.p)||{}).cn,lab=d.chnum&&cn?`<span class="cn">${rtl()?'الفصل '+(ORD[cn]||cn):'Chapter '+cn}</span>`:'';
+  h=(x.p.h?`<div class="chh">${lab}<h2>${esc(x.p.h)}</h2></div>`:'')+paras(x.p.t);
+  if(d.pnum){const f=L.findIndex(y=>y.k=='c');pn=`<div class="pn">${f<0?n:n-f}</div>`}}
+ else if(x.k=='bs')h='<div class="bs">بسم الله الرحمن الرحيم</div>';
+ else if(x.k=='t')h=`<div class="tp"><div class="logo">${b.logo||''}</div><h1>${esc(b.title)}</h1><p>${esc(b.subtitle)}</p><p class="au">${esc(b.author)}</p>${b.publisher?`<p>${esc(b.publisher)}</p>`:''}</div>`;
+ else if(x.k=='cr'){const y=new Date().getFullYear();h=`<div class="cr"><p><b>${esc(b.title)}</b></p><p>${rtl()?'تأليف':'By'}: ${esc(b.author)}</p><p>${esc(b.edition)} ${y}</p>${b.publisher?`<p>${esc(b.publisher)}</p>`:''}${b.isbn?`<p>ISBN: ${esc(b.isbn)}</p>`:''}<p>© ${y} ${esc(b.author)}</p><p>${rtl()?'جميع الحقوق محفوظة. لا يجوز نسخ هذا الكتاب أو تخزينه أو إعادة نشره بأي وسيلة دون إذن كتابي من المؤلف.':'All rights reserved.'}</p></div>`}
  else if(x.k=='dd')h=`<div class="dd">${esc(b.dedication)}</div>`;
- else if(x.k=='toc')h=`<h2>${rtl()?'المحتويات':'Contents'}</h2>`+L.filter(y=>y.k=='c'&&y.p.h).map(y=>`<div class="tr"><span>${esc(y.p.h)}</span><i></i><span>${L.indexOf(y)+1}</span></div>`).join('');
+ else if(x.k=='ep')h=`<div class="dd">${esc(b.epigraph).replace(/\n/g,'<br>')}</div>`;
+ else if(x.k=='ab')h=`<h2>${rtl()?'عن المؤلف':'About the author'}</h2>`+paras(b.about);
+ else if(x.k=='toc'){const T=L.filter(y=>y.k=='c'&&y.p.h),f=L.findIndex(y=>y.k=='c');h=`<h2>${rtl()?'المحتويات':'Contents'}${x.j?' (تابع)':''}</h2>`+T.slice(x.j*16,x.j*16+16).map(y=>`<div class="tr"><span>${esc(y.p.h)}</span><i></i><span>${L.indexOf(y)-f+1}</span></div>`).join('')}
  return `<div class="sheet hs-${d.hs}" dir="${d.dir}" style="${css()};padding:${d.top}mm ${r}mm ${d.bottom}mm ${l}mm"><div class="in"><div class="c">${h}</div></div>${pn}</div>`}
 function cov(side){const b=S.book,d=S.d;const i=side=='f'?`<div class="logo">${b.logo||''}</div><div><h1>${esc(b.title)}</h1><p class="sub">${esc(b.subtitle)}</p></div><p class="au">${esc(b.author)}</p>`:`<p class="bl">${esc(b.blurb)}</p><div class="logo s">${b.logo||''}</div>`;
  return `<div class="sheet cov" dir="${d.dir}" style="${css()};background:${d.cover};color:${d.coverInk};padding:14mm"><div class="in cin">${i}</div></div>`}
 const mm=3.7795,zf=px=>px/(SIZES[S.d.size][0]*mm);
-function fits(p){const m=$('#meas');m.innerHTML=sheet({k:'c',p},1,[]);const i=m.querySelector('.in');return i.firstElementChild.scrollHeight<=i.clientHeight+1}
+function fits(p){const m=$('#meas');m.innerHTML=sheet({k:'c',p,cn:p.h&&!p.m?1:0},1,[]);const i=m.querySelector('.in');return i.firstElementChild.scrollHeight<=i.clientHeight+1}
 function splitPage(p){let sep='\n\n',u=p.t.split(/\n+/).filter(Boolean);if(u.length<2){u=p.t.split(/(?<=[.!؟?])\s+/).filter(Boolean);sep=' '}if(u.length<2){u=p.t.split(/\s+/);sep=' '}if(u.length<2)return null;
- const mk=n=>({h:p.h,t:u.slice(0,n).join(sep)});let k=u.length-1;while(k>1&&!fits(mk(k)))k--;return[mk(k),{h:'',t:u.slice(k).join(sep)}]}
+ const mk=n=>({h:p.h,m:p.m,t:u.slice(0,n).join(sep)});let k=u.length-1;while(k>1&&!fits(mk(k)))k--;return[mk(k),{h:'',t:u.slice(k).join(sep)}]}
 function fitAll(silent){const P=S.book.pages;let ch=0;snap();for(let i=0;i<P.length;i++){let g=0;while(!fits(P[i])&&g++<60){const s=splitPage(P[i]);if(!s)break;P.splice(i,1,s[0],s[1]);ch++}}
  if(!ch)hist.pop();else if(!silent)toast('تم تقسيم النص على '+ch+' صفحات إضافية');return ch}
 function drawPages(keep){const P=S.book.pages,L=inside();$('#empty').hidden=!!P.length;
  $('#grid').innerHTML=L.map((x,i)=>`<div class="th ${x.k=='c'&&x.i==S.sel?'on':''}" style="zoom:${zf(105)}" data-i="${x.k=='c'?x.i:''}">${sheet(x,i+1,L)}</div>`).join('');
  const p=pg();$('#prev').innerHTML=p?`<div style="zoom:${zf(Math.min(420,innerWidth-70))}">${sheet({k:'c',p,i:S.sel},L.findIndex(x=>x.i===S.sel)+1,L)}</div>`:'';
  $('#pinfo').textContent=p?`${S.sel+1} / ${P.length}`:'';$('#warn').textContent=p&&!fits(p)?'⚠ نص هذه الصفحة أطول من المساحة — اضغط «ضبط الصفحات تلقائيًا»':'';
- if(!keep){$('#eh').value=p?p.h:'';$('#et').value=p?p.t:''}}
+ if(!keep){$('#eh').value=p?p.h:'';$('#et').value=p?p.t:'';$('#em').checked=!!(p&&p.m)}}
 $('#grid').onclick=e=>{const t=e.target.closest('.th');if(t&&t.dataset.i!==''){S.sel=+t.dataset.i;drawPages()}};
 $('#pv').onclick=()=>{S.sel=Math.max(0,S.sel-1);drawPages()};$('#nx').onclick=()=>{S.sel=Math.min(S.book.pages.length-1,S.sel+1);drawPages()};
 $('#eh').onfocus=$('#et').onfocus=snap;
 $('#eh').oninput=$('#et').oninput=()=>{if(!pg())return;pg().h=$('#eh').value;pg().t=$('#et').value;drawPages(1);save()};
+$('#em').onchange=()=>{if(pg()){snap();pg().m=$('#em').checked;drawPages(1);save()}};
 $('#addp').onclick=()=>{snap();S.book.pages.splice(S.sel+1,0,{h:'',t:''});if(S.book.pages.length>1)S.sel++;drawPages();save()};
 $('#delp').onclick=()=>{if(!pg())return;snap();S.book.pages.splice(S.sel,1);S.sel=Math.max(0,Math.min(S.sel,S.book.pages.length-1));drawPages();save()};
 const mv=d=>{const P=S.book.pages,j=S.sel+d;if(j<0||j>=P.length)return;snap();[P[S.sel],P[j]]=[P[j],P[S.sel]];S.sel=j;drawPages();save()};
 $('#upp').onclick=()=>mv(-1);$('#dnp').onclick=()=>mv(1);
 $('#fit').onclick=()=>{fitAll();drawPages();save()};
 $('#goai').onclick=async()=>{const q=$('#pm').value.trim();if(!q||!pg())return;const all=$('#scope').value=='all',b=S.book;
- const sys=`أنت محرر كتب محترف. نفّذ طلب المستخدم حرفيًا على النص المعطى مع الحفاظ على لغة الكتاب (${b.lang}) وأسلوبه (${b.tone}) إلا إذا طُلب غير ذلك. أعد JSON صالحًا فقط: {"pages":[{"h":"","t":""}]} — ${all?'كل صفحات الكتاب بعد التعديل':'الصفحة المعدّلة (قد تصبح أكثر من صفحة إن لزم)'}، ولا تزد الصفحة عن 110 كلمة، والفقرات مفصولة بسطر فارغ.`;
- busy(1);try{const r=parseJ(await ai(sys,[{role:'user',content:'الطلب: '+q+'\n\nالنص:\n'+JSON.stringify(all?b.pages:[pg()])}],all?8000:2000));snap();const np=r.pages.map(p=>({h:p.h||'',t:p.t||''}));if(all)b.pages=np;else b.pages.splice(S.sel,1,...np);$('#pm').value='';toast('تم التعديل')}catch(e){toast(errMsg(e))}
+ const sys=`أنت محرر كتب محترف. نفّذ طلب المستخدم حرفيًا على النص المعطى مع الحفاظ على لغة الكتاب (${b.lang}) وأسلوبه (${b.tone}) إلا إذا طُلب غير ذلك. أعد JSON صالحًا فقط: {"pages":[{"h":"","t":"","m":false}]} — ${all?'كل صفحات الكتاب بعد التعديل':'الصفحة المعدّلة (قد تصبح أكثر من صفحة إن لزم)'}، ولا تزد الصفحة عن 110 كلمة، والفقرات مفصولة بسطر فارغ.`;
+ busy(1);try{const r=await aiJ(sys,[{role:'user',content:'الطلب: '+q+'\n\nالنص:\n'+JSON.stringify(all?b.pages:[pg()])}],all?8000:2000);snap();const np=r.pages.map(p=>({h:p.h||'',t:p.t||'',m:!!p.m}));if(all)b.pages=np;else b.pages.splice(S.sel,1,...np);$('#pm').value='';toast('تم التعديل')}catch(e){toast(errMsg(e))}
  busy(0);drawPages();save()};
 
 /* ---------- التصميم ---------- */
 const N=(a,b,c)=>[a,b,c];
-const F=[['size','مقاس الكتاب','sel',Object.keys(SIZES)],['font','الخط','sel',FONTS],['fs','حجم الخط (نقطة)','num',N(9,22,.5)],['lh','تباعد الأسطر','num',N(1.2,2.6,.1)],['align','المحاذاة','sel',[['justify','ضبط'],['start','بداية'],['center','وسط']]],['dir','اتجاه الكتاب','sel',[['rtl','عربي (من اليمين)'],['ltr','لاتيني (من اليسار)']]],['hs','شكل العناوين','sel',[['rule','خط تحتها'],['plain','بسيط'],['orn','زخرفة']]],['primary','لون العناوين','col'],['paper','لون الورق','col'],['ink','لون النص','col'],['cover','لون الغلاف','col'],['coverInk','لون كلام الغلاف','col'],['inner','هامش التجليد (مم)','num',N(5,40,1)],['outer','الهامش الخارجي','num',N(5,40,1)],['top','هامش أعلى','num',N(5,40,1)],['bottom','هامش أسفل','num',N(8,40,1)],['bleed','زيادة القص Bleed','sel',[[0,'بدون'],[3,'3 مم']]],['gsm','وزن الورق (لحساب الكعب)','sel',[70,80,100]],['pnum','أرقام الصفحات','chk'],['toc','صفحة المحتويات','chk'],['copyright','صفحة الحقوق','chk'],['dedication','صفحة الإهداء','chk'],['blank4','إكمال الصفحات لمضاعف 4','chk']];
+const F=[['size','مقاس الكتاب','sel',Object.keys(SIZES)],['font','الخط','sel',FONTS],['fs','حجم الخط (نقطة)','num',N(9,22,.5)],['lh','تباعد الأسطر','num',N(1.2,2.6,.1)],['align','المحاذاة','sel',[['justify','ضبط'],['start','بداية'],['center','وسط']]],['dir','اتجاه الكتاب','sel',[['rtl','عربي (من اليمين)'],['ltr','لاتيني (من اليسار)']]],['hs','شكل العناوين','sel',[['rule','خط تحتها'],['plain','بسيط'],['orn','زخرفة']]],['primary','لون العناوين','col'],['paper','لون الورق','col'],['ink','لون النص','col'],['cover','لون الغلاف','col'],['coverInk','لون كلام الغلاف','col'],['inner','هامش التجليد (مم)','num',N(5,40,1)],['outer','الهامش الخارجي','num',N(5,40,1)],['top','هامش أعلى','num',N(5,40,1)],['bottom','هامش أسفل','num',N(8,40,1)],['bleed','زيادة القص Bleed','sel',[[0,'بدون'],[3,'3 مم']]],['gsm','وزن الورق (لحساب الكعب)','sel',[70,80,100]],['basmala','صفحة «بسم الله الرحمن الرحيم»','chk'],['chnum','ترقيم الفصول (الفصل الأول…)','chk'],['pnum','أرقام الصفحات','chk'],['toc','صفحة المحتويات','chk'],['copyright','صفحة الحقوق','chk'],['dedication','صفحة الإهداء','chk'],['blank4','إكمال الصفحات لمضاعف 4','chk']];
 function drawDesign(){$('#dform').innerHTML=F.map(([k,t,ty,o])=>{const v=S.d[k];let c;
  if(ty=='sel')c=`<select data-k="${k}">${o.map(x=>{x=Array.isArray(x)?x:[x,x];return`<option value="${x[0]}" ${x[0]==v?'selected':''}>${x[1]}</option>`}).join('')}</select>`;
  else if(ty=='num')c=`<input type="number" data-k="${k}" value="${v}" min="${o[0]}" max="${o[1]}" step="${o[2]}">`;
@@ -265,7 +279,7 @@ $('#dform').oninput=e=>{const t=e.target,k=t.dataset.k;if(!k)return;if(t.type=='
 $('#dform').onfocusin=snap;
 
 /* ---------- الغلاف والشعار ---------- */
-const BF=[['title','عنوان الكتاب'],['subtitle','عنوان فرعي'],['author','اسم المؤلف'],['blurb','نبذة الغلاف الخلفي','ta'],['dedication','الإهداء','ta'],['lang','لغة الكتاب'],['tone','أسلوب الكلام ونبرته']];
+const BF=[['title','عنوان الكتاب'],['subtitle','عنوان فرعي'],['author','اسم المؤلف'],['blurb','نبذة الغلاف الخلفي','ta'],['dedication','الإهداء','ta'],['publisher','الناشر / دار النشر'],['edition','الطبعة'],['isbn','رقم ISBN (اختياري)'],['epigraph','اقتباس افتتاحي (اختياري)','ta'],['about','نبذة عن المؤلف (تظهر في آخر الكتاب)','ta'],['lang','لغة الكتاب'],['tone','أسلوب الكلام ونبرته']];
 function mkLogo(st,ch){const c=S.d.logo,k=S.d.cover,sh={'دائرة':`<circle cx="100" cy="100" r="88" fill="${c}"/>`,'درع':`<path d="M100 12 178 40v52c0 48-33 80-78 96C55 172 22 140 22 92V40z" fill="${c}"/>`,'معيّن':`<rect x="38" y="38" width="124" height="124" rx="14" transform="rotate(45 100 100)" fill="${c}"/>`,'كتاب':`<path d="M18 50q41-18 82 6 41-24 82-6v104q-41-18-82 6-41-24-82-6z" fill="${c}"/>`};
  return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">${sh[st]||sh['دائرة']}<text x="100" y="${st=='كتاب'?116:126}" text-anchor="middle" font-size="84" font-family="Amiri,serif" font-weight="700" fill="${k}">${esc(ch)}</text></svg>`}
 const clean=s=>s.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,'').replace(/<image[^>]*>/gi,'').replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,'').replace(/javascript:/gi,'');
@@ -311,8 +325,8 @@ const TABS=[['chat','١ الحوار'],['pages','٢ الصفحات'],['design','
 function refresh(){$('#nav').innerHTML=TABS.map(([k,t])=>`<button data-t="${k}" class="${S.tab==k?'on':''}">${t}</button>`).join('');
  document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!='t-'+S.tab);({chat:drawChat,pages:drawPages,design:drawDesign,cover:drawCover,out:drawOut})[S.tab]()}
 $('#nav').onclick=e=>{const t=e.target.dataset.t;if(t){S.tab=t;refresh()}};
-$('#gear').onclick=()=>{$('#ekey').value=S.ep.key||'';$('#eurl').value=S.ep.url;$('#emodel').value=S.ep.model;$('#dlg').showModal()};
-$('#esave').onclick=()=>{S.ep={key:$('#ekey').value.trim(),url:$('#eurl').value.trim(),model:$('#emodel').value.trim()};save();$('#dlg').close();toast('تم الحفظ')};
+
+
 refresh();
 </script>
 </body>
